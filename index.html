@@ -50,8 +50,7 @@
     <select id="addrSelect">
         <option value="">-- 주소를 선택하세요 --</option>
 
-        <!-- ▼▼▼ 여기부터 200~300개 주소를 쭉 추가하면 됩니다 ▼▼▼ -->
-        <!-- value에는 실제 PNG 파일 이름을 넣고, 텍스트에는 한글 주소를 표시 -->
+
 
         <option value="apt_chart_85_11110.png">서울특별시 종로구</option>
         <option value="apt_chart_85_11140.png">서울특별시 중구</option>
@@ -332,11 +331,7 @@
        
 
 
-        
-        <!-- 실제로는 여기 아래로 200~300개 더 붙이면 됨 -->
-        <!-- <option value="파일명.png">한글 주소</option> -->
 
-        <!-- ▲▲▲ 여기까지 옵션들 ▲▲▲ -->
     </select>
 
     <div id="image-container">
@@ -361,7 +356,7 @@
                 return;
             }
 
-            // images 폴더 안에 있는 png를 참조
+            // apt_trade_chart_85 폴더 안에 있는 png를 참조
             const imgPath = "apt_trade_chart_85/" + filename;
 
             status.textContent = "이미지 불러오는 중...";
