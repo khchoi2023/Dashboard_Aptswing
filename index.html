@@ -29,7 +29,7 @@
             height: auto;
             border: 1px solid #ddd;
             padding: 4px;
-            display: none; /* 처음엔 숨김 */
+            display: none;
         }
         #status {
             margin-top: 8px;
@@ -45,9 +45,9 @@
         }
         #reportFrame {
             width: 100%;
-            height: 600px;  /* 필요에 따라 조절 */
+            height: 600px;
             border: 1px solid #ddd;
-            display: none;  /* 처음엔 숨김 */
+            display: none;
         }
 
 
@@ -62,7 +62,6 @@
     <select id="addrSelect">
         <option value="">-- 주소를 선택하세요 --</option>
 
-        <!-- value에는 실제 PNG 파일 이름을 넣고, 텍스트에는 한글 주소를 표시 -->
         <option value="apt_chart_85_11110.png">서울특별시 종로구</option>
         <option value="apt_chart_85_11140.png">서울특별시 중구</option>
         <option value="apt_chart_85_11170.png">서울특별시 용산구</option>
@@ -348,7 +347,7 @@
         <div id="status"></div>
     </div>
 
-    <!-- ▼ 여기: 리포트 HTML을 표시할 iframe -->
+    <!-- 리포트 HTML을 표시할 iframe -->
     <div id="report-container">
         <iframe id="reportFrame" src="" title="아파트 리포트"></iframe>
     </div>
@@ -392,11 +391,9 @@
             img.src = imgPath;
             img.alt = labelText + " 이미지";
 
-            // ▼ 리포트 HTML 파일 경로 설정
-            // filename 예: "apt_chart_85_11110.png" 에서 11110만 추출
             const match = filename.match(/apt_chart_85_(\d+)\.png$/);
             if (match) {
-                const dongCode = match[1]; // "11110"
+                const dongCode = match[1];
                 const reportPath = "apt_trade_report_85/apt_report_85_" + dongCode + ".html";
 
                 reportFrame.style.display = "block";
