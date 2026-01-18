@@ -366,11 +366,19 @@
         <iframe id="reportFrame" src="" title="아파트 리포트"></iframe>
     </div>
 
+    <!-- 스크롤 안내 GIF -->
+    <div id="scroll-indicator" style="display:none; text-align:center; margin-top:8px;">
+        <img src="scroll.gif" alt="scroll down" style="width:120px; opacity:0.7;">
+    </div>
+
+
     <script>
         const select = document.getElementById("addrSelect");
         const img = document.getElementById("addrImage");
         const status = document.getElementById("status");
         const reportFrame = document.getElementById("reportFrame");
+        const scrollIndicator = document.getElementById("scroll-indicator");
+
 
         select.addEventListener("change", () => {
             const filename = select.value;
@@ -383,6 +391,7 @@
                 status.textContent = "";
                 reportFrame.style.display = "none";
                 reportFrame.src = "";
+                scrollIndicator.style.display = "none";
                 return;
             }
 
@@ -412,6 +421,8 @@
 
                 reportFrame.style.display = "block";
                 reportFrame.src = reportPath;
+                scrollIndicator.style.display = "block";
+
             } else {
                 // 파일명 패턴이 다를 경우 리포트 숨김
                 reportFrame.style.display = "none";
