@@ -9,13 +9,13 @@
 
 ## Overview
 
-**APT. Swing Dashboard** is a web dashboard for exploring Korean apartment market data by region. Users can select an address area from a nationwide list of cities, districts, and counties, then review apartment-market information through a focused dashboard experience.
+**APT. Swing Dashboard** is a web dashboard for exploring Korean apartment market data by district-level region. Users select one area from a nationwide district list, then review apartment-market information through a focused dashboard experience.
 
 The project is designed to make regional housing-market review easier by turning address-based apartment data into a simple interactive interface.
 
 ## What It Does
 
-- Provides a region selector covering major Korean administrative areas.
+- Provides a single region selector covering district-level areas across Korea.
 - Supports address-based exploration of apartment market information.
 - Organizes regional apartment data into a dashboard-style interface.
 - Helps users compare and review local housing-market movement more efficiently.
@@ -29,7 +29,7 @@ The dashboard includes selectable areas across Korea, including:
 | Metropolitan cities | Seoul, Busan, Daegu, Incheon, Gwangju, Daejeon, Ulsan |
 | Special cities | Sejong Special Self-Governing City |
 | Provinces | Gyeonggi, Chungcheong, Jeolla, Gyeongsang, Jeju, Gangwon |
-| District-level views | City, county, and district selections such as Gangnam-gu, Bundang-gu, Haeundae-gu, and many others |
+| District-level views | One-step city, county, and district selections such as Gangnam-gu, Bundang-gu, Haeundae-gu, and many others |
 
 ## User Flow
 
@@ -37,10 +37,7 @@ The dashboard includes selectable areas across Korea, including:
 open dashboard
     |
     v
-select city / province
-    |
-    v
-select district / county
+select one district-level area
     |
     v
 review apartment market dashboard
