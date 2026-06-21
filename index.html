@@ -1,471 +1,2424 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-
-    <!-- Google tag (gtag.js) Start -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z2J20DBB43"></script>
-    <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-Z2J20DBB43');
-    </script>
-    <!-- Google tag (gtag.js) End -->
-
-
-
     <meta charset="UTF-8" />
-    <title>아파트 스윙 - APT. Swing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>APT. Swing - 지역별 아파트 실거래가 흐름 대시보드</title>
+    <meta name="description" content="APT. Swing은 전국 시군구별 아파트 실거래가 흐름을 장기 차트와 분석 리포트로 확인할 수 있는 지역 아파트 실거래가 대시보드입니다." />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#f7f3ec" />
+    <link rel="canonical" href="https://www.aptswing.com/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:site_name" content="APT. Swing" />
+    <meta property="og:title" content="APT. Swing - 지역별 아파트 실거래가 흐름 대시보드" />
+    <meta property="og:description" content="전국 시군구별 아파트 실거래가 흐름을 장기 차트와 분석 리포트로 확인하세요." />
+    <meta property="og:url" content="https://www.aptswing.com/" />
+    <meta property="og:image" content="https://www.aptswing.com/apt_trade_chart_85/apt_chart_85_11110.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="APT. Swing - 지역별 아파트 실거래가 흐름 대시보드" />
+    <meta name="twitter:description" content="전국 시군구별 아파트 실거래가 흐름을 장기 차트와 분석 리포트로 확인하세요." />
+    <meta name="twitter:image" content="https://www.aptswing.com/apt_trade_chart_85/apt_chart_85_11110.png" />
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "APT. Swing",
+            "alternateName": "APT. Swing Beta",
+            "url": "https://www.aptswing.com/",
+            "applicationCategory": "FinanceApplication",
+            "operatingSystem": "Web",
+            "inLanguage": "ko-KR",
+            "description": "전국 시군구별 아파트 실거래가 흐름을 장기 차트와 분석 리포트로 확인할 수 있는 지역 아파트 실거래가 대시보드입니다.",
+            "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "KRW"
+            },
+            "publisher": {
+                "@type": "Organization",
+                "name": "APT. Swing"
+            }
+        }
+    </script>
     <style>
+        :root {
+            color-scheme: light;
+            --bg: #f7f3ec;
+            --surface: #fffdf8;
+            --surface-strong: #ffffff;
+            --ink: #20242c;
+            --muted: #667085;
+            --line: #ded8ce;
+            --line-strong: #c8c0b4;
+            --green: #1d8f73;
+            --green-soft: #e3f4ee;
+            --coral: #d95d50;
+            --coral-soft: #fae8e4;
+            --blue: #2d6cdf;
+            --blue-soft: #e6eefc;
+            --amber: #b7791f;
+            --shadow: 0 16px 40px rgba(32, 36, 44, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 0 16px;
+            margin: 0;
+            min-height: 100vh;
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.75), rgba(247, 243, 236, 0.9)),
+                var(--bg);
+            color: var(--ink);
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            letter-spacing: 0;
+        }
+
+        button,
+        input,
+        select {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        .shell {
+            display: grid;
+            grid-template-columns: 308px minmax(0, 1fr);
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            padding: 24px 18px;
+            overflow: auto;
+            background: rgba(255, 253, 248, 0.92);
+            border-right: 1px solid var(--line);
+            backdrop-filter: blur(18px);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 26px;
+        }
+
+        .brand-mark {
+            display: grid;
+            width: 40px;
+            height: 40px;
+            place-items: center;
+            border-radius: 8px;
+            background: var(--ink);
+            color: #ffffff;
+            font-weight: 800;
+            font-size: 15px;
+        }
+
+        .brand-title {
+            margin: 0;
+            font-size: 19px;
+            line-height: 1.1;
+        }
+
+        .brand-subtitle {
+            margin: 3px 0 0;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .section-label {
+            display: block;
+            margin: 18px 0 8px;
+            color: #404651;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .select {
+            width: 100%;
+            min-height: 300px;
+            padding: 8px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--surface-strong);
+            color: var(--ink);
+            outline: none;
+        }
+
+        .select option {
+            padding: 8px;
+        }
+
+        .province-select {
+            width: 100%;
+            height: 42px;
+            margin-top: 10px;
+            padding: 0 12px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--surface-strong);
+            color: var(--ink);
+            outline: none;
+        }
+
+        .province-select:focus {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px rgba(45, 108, 223, 0.12);
+        }
+
+        .side-card {
+            margin-top: 18px;
+            padding: 15px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: #fbf8f1;
+        }
+
+        .side-card strong {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 13px;
+        }
+
+        .side-card p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.55;
+        }
+
+        .main {
+            min-width: 0;
+            padding: 22px 28px 32px;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            margin-bottom: 20px;
+        }
+
+        .eyebrow {
+            margin: 0 0 7px;
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(26px, 3vw, 42px);
+            line-height: 1.08;
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .icon-button {
+            display: grid;
+            width: 38px;
+            height: 38px;
+            place-items: center;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--surface-strong);
+            color: #475467;
+        }
+
+        .icon-button svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .kpi {
+            min-height: 98px;
+            padding: 16px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--surface-strong);
+            box-shadow: 0 8px 24px rgba(32, 36, 44, 0.04);
+        }
+
+        .kpi span {
+            display: block;
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .kpi strong {
+            display: block;
+            margin-top: 8px;
+            font-size: 24px;
+            line-height: 1;
+        }
+
+        .kpi em {
+            display: block;
+            margin-top: 9px;
+            color: var(--muted);
+            font-size: 12px;
+            font-style: normal;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: minmax(310px, 0.92fr) minmax(420px, 1.35fr);
+            gap: 14px;
+            align-items: start;
+        }
+
+        .panel {
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: rgba(255, 253, 248, 0.94);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 16px 18px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .panel-title {
+            margin: 0;
+            font-size: 15px;
+        }
+
+        .panel-note {
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .market-map {
+            min-height: 392px;
+            padding: 18px;
+        }
+
+        .map-board {
+            height: 416px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: #eef2f0;
+            overflow: hidden;
+        }
+
+        .map-frame {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            background: #eef2f0;
+        }
+
+        .map-empty {
+            display: grid;
+            width: 100%;
+            height: 100%;
+            place-items: center;
+            padding: 22px;
+            color: var(--muted);
+            text-align: center;
+            background:
+                linear-gradient(135deg, rgba(45, 108, 223, 0.10), transparent),
+                #fbf8f1;
+        }
+
+        .map-empty strong {
+            display: block;
+            margin-bottom: 7px;
+            color: var(--ink);
+            font-size: 17px;
+        }
+
+        .legend {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 14px;
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .legend span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .map-link {
+            color: var(--blue);
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .chart-panel {
+            display: grid;
+            grid-template-rows: auto minmax(280px, auto) auto;
+        }
+
+        .chart-stage {
+            padding: 16px;
+            background: var(--surface-strong);
+        }
+
+        .chart-image {
+            display: block;
+            width: 100%;
+            max-height: 560px;
+            object-fit: contain;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: #ffffff;
+        }
+
+        .empty-state {
+            display: grid;
+            min-height: 342px;
+            place-items: center;
+            border: 1px dashed var(--line-strong);
+            border-radius: 8px;
+            background: #fbf8f1;
+            color: var(--muted);
+            text-align: center;
+            padding: 24px;
+        }
+
+        .empty-state strong {
+            display: block;
+            margin-bottom: 7px;
+            color: var(--ink);
+            font-size: 18px;
+        }
+
+        .insight-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+            padding: 0 16px 16px;
+        }
+
+        .mini-card {
+            min-height: 92px;
+            padding: 14px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: #fbf8f1;
+        }
+
+        .mini-card b {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .mini-card p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 12px;
             line-height: 1.5;
         }
-        label {
-            font-weight: 600;
+
+        .report-panel {
+            grid-column: 1 / -1;
         }
-        select {
+
+        .report-tools {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .primary-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 36px;
+            padding: 0 13px;
+            border: 1px solid var(--ink);
+            border-radius: 8px;
+            background: var(--ink);
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .report-frame {
             width: 100%;
-            padding: 8px;
-            margin: 8px 0 16px;
-            font-size: 14px;
-        }
-        #image-container {
-            margin-top: 24px;
-            text-align: center;
-        }
-        #addrImage {
-            max-width: 100%;
-            height: auto;
-            border: 1px solid #ddd;
-            padding: 4px;
-            display: none;
-        }
-        #status {
-            margin-top: 8px;
-            font-size: 14px;
-            color: #666;
+            height: 520px;
+            border: 0;
+            background: #ffffff;
         }
 
-
-
-        /* 리포트 iframe 스타일 */
-        #report-container {
-            margin-top: 24px;
-        }
-        #reportFrame {
-            width: 100%;
-            height: 600px;
-            border: 1px solid #ddd;
-            display: none;
+        .report-empty {
+            display: grid;
+            min-height: 180px;
+            place-items: center;
+            color: var(--muted);
+            background: #ffffff;
         }
 
+        .report-index-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 22px;
+            padding: 18px 20px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--surface-strong);
+        }
 
+        .report-index-link h2 {
+            margin: 0 0 5px;
+            font-size: 16px;
+        }
 
+        .report-index-link p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.6;
+        }
 
+        footer {
+            margin-top: 22px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        @media (max-width: 1180px) {
+            .shell {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: relative;
+                height: auto;
+                border-right: 0;
+                border-bottom: 1px solid var(--line);
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .main {
+                padding: 18px 14px 28px;
+            }
+
+            .topbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .top-actions {
+                justify-content: flex-start;
+            }
+
+            .kpi-grid,
+            .insight-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .map-board {
+                height: 300px;
+            }
+
+            .report-frame {
+                height: 460px;
+            }
+
+            .report-index-link {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>아파트 스윙 beta</h1>
+    <div class="shell">
+        <aside class="sidebar" aria-label="지역 선택">
+            <div class="brand">
+                <div class="brand-mark">APT</div>
+                <div>
+                    <h2 class="brand-title">APT. Swing - Beta</h2>
+                    <p class="brand-subtitle">지역 아파트 실거래가 대시보드</p>
+                </div>
+            </div>
 
-    <label for="addrSelect">주소를 선택하세요:</label>
-    <select id="addrSelect">
-        <option value="">-- 주소를 선택하세요 --</option>
+            <label class="section-label" for="provinceFilter">시도 필터</label>
+            <select id="provinceFilter" class="province-select">
+                <option value="all">전국</option>
+            </select>
 
-        <option value="apt_chart_85_11110.png">서울특별시 종로구</option>
-        <option value="apt_chart_85_11140.png">서울특별시 중구</option>
-        <option value="apt_chart_85_11170.png">서울특별시 용산구</option>
-        <option value="apt_chart_85_11200.png">서울특별시 성동구</option>
-        <option value="apt_chart_85_11215.png">서울특별시 광진구</option>
-        <option value="apt_chart_85_11230.png">서울특별시 동대문구</option>
-        <option value="apt_chart_85_11260.png">서울특별시 중랑구</option>
-        <option value="apt_chart_85_11290.png">서울특별시 성북구</option>
-        <option value="apt_chart_85_11305.png">서울특별시 강북구</option>
-        <option value="apt_chart_85_11320.png">서울특별시 도봉구</option>
+            <label class="section-label" for="regionSelect">분석 지역</label>
+            <select id="regionSelect" class="select" size="18">
+                <option value="apt_chart_85_11110.png" data-code="11110">서울특별시 종로구</option>
+                <option value="apt_chart_85_11140.png" data-code="11140">서울특별시 중구</option>
+                <option value="apt_chart_85_11170.png" data-code="11170">서울특별시 용산구</option>
+                <option value="apt_chart_85_11200.png" data-code="11200">서울특별시 성동구</option>
+                <option value="apt_chart_85_11215.png" data-code="11215">서울특별시 광진구</option>
+                <option value="apt_chart_85_11230.png" data-code="11230">서울특별시 동대문구</option>
+                <option value="apt_chart_85_11260.png" data-code="11260">서울특별시 중랑구</option>
+                <option value="apt_chart_85_11290.png" data-code="11290">서울특별시 성북구</option>
+                <option value="apt_chart_85_11305.png" data-code="11305">서울특별시 강북구</option>
+                <option value="apt_chart_85_11320.png" data-code="11320">서울특별시 도봉구</option>
+                <option value="apt_chart_85_11350.png" data-code="11350">서울특별시 노원구</option>
+                <option value="apt_chart_85_11380.png" data-code="11380">서울특별시 은평구</option>
+                <option value="apt_chart_85_11410.png" data-code="11410">서울특별시 서대문구</option>
+                <option value="apt_chart_85_11440.png" data-code="11440">서울특별시 마포구</option>
+                <option value="apt_chart_85_11470.png" data-code="11470">서울특별시 양천구</option>
+                <option value="apt_chart_85_11500.png" data-code="11500">서울특별시 강서구</option>
+                <option value="apt_chart_85_11530.png" data-code="11530">서울특별시 구로구</option>
+                <option value="apt_chart_85_11545.png" data-code="11545">서울특별시 금천구</option>
+                <option value="apt_chart_85_11560.png" data-code="11560">서울특별시 영등포구</option>
+                <option value="apt_chart_85_11590.png" data-code="11590">서울특별시 동작구</option>
+                <option value="apt_chart_85_11620.png" data-code="11620">서울특별시 관악구</option>
+                <option value="apt_chart_85_11650.png" data-code="11650">서울특별시 서초구</option>
+                <option value="apt_chart_85_11680.png" data-code="11680">서울특별시 강남구</option>
+                <option value="apt_chart_85_11710.png" data-code="11710">서울특별시 송파구</option>
+                <option value="apt_chart_85_11740.png" data-code="11740">서울특별시 강동구</option>
+                <option value="apt_chart_85_26110.png" data-code="26110">부산광역시 중구</option>
+                <option value="apt_chart_85_26140.png" data-code="26140">부산광역시 서구</option>
+                <option value="apt_chart_85_26170.png" data-code="26170">부산광역시 동구</option>
+                <option value="apt_chart_85_26200.png" data-code="26200">부산광역시 영도구</option>
+                <option value="apt_chart_85_26230.png" data-code="26230">부산광역시 부산진구</option>
+                <option value="apt_chart_85_26260.png" data-code="26260">부산광역시 동래구</option>
+                <option value="apt_chart_85_26290.png" data-code="26290">부산광역시 남구</option>
+                <option value="apt_chart_85_26320.png" data-code="26320">부산광역시 북구</option>
+                <option value="apt_chart_85_26350.png" data-code="26350">부산광역시 해운대구</option>
+                <option value="apt_chart_85_26380.png" data-code="26380">부산광역시 사하구</option>
+                <option value="apt_chart_85_26410.png" data-code="26410">부산광역시 금정구</option>
+                <option value="apt_chart_85_26440.png" data-code="26440">부산광역시 강서구</option>
+                <option value="apt_chart_85_26470.png" data-code="26470">부산광역시 연제구</option>
+                <option value="apt_chart_85_26500.png" data-code="26500">부산광역시 수영구</option>
+                <option value="apt_chart_85_26530.png" data-code="26530">부산광역시 사상구</option>
+                <option value="apt_chart_85_26710.png" data-code="26710">부산광역시 기장군</option>
+                <option value="apt_chart_85_27110.png" data-code="27110">대구광역시 중구</option>
+                <option value="apt_chart_85_27140.png" data-code="27140">대구광역시 동구</option>
+                <option value="apt_chart_85_27170.png" data-code="27170">대구광역시 서구</option>
+                <option value="apt_chart_85_27200.png" data-code="27200">대구광역시 남구</option>
+                <option value="apt_chart_85_27230.png" data-code="27230">대구광역시 북구</option>
+                <option value="apt_chart_85_27260.png" data-code="27260">대구광역시 수성구</option>
+                <option value="apt_chart_85_27290.png" data-code="27290">대구광역시 달서구</option>
+                <option value="apt_chart_85_27710.png" data-code="27710">대구광역시 달성군</option>
+                <option value="apt_chart_85_27720.png" data-code="27720">대구광역시 군위군</option>
+                <option value="apt_chart_85_28110.png" data-code="28110">인천광역시 중구</option>
+                <option value="apt_chart_85_28140.png" data-code="28140">인천광역시 동구</option>
+                <option value="apt_chart_85_28177.png" data-code="28177">인천광역시 미추홀구</option>
+                <option value="apt_chart_85_28185.png" data-code="28185">인천광역시 연수구</option>
+                <option value="apt_chart_85_28200.png" data-code="28200">인천광역시 남동구</option>
+                <option value="apt_chart_85_28237.png" data-code="28237">인천광역시 부평구</option>
+                <option value="apt_chart_85_28245.png" data-code="28245">인천광역시 계양구</option>
+                <option value="apt_chart_85_28260.png" data-code="28260">인천광역시 서구</option>
+                <option value="apt_chart_85_28710.png" data-code="28710">인천광역시 강화군</option>
+                <option value="apt_chart_85_28720.png" data-code="28720">인천광역시 옹진군</option>
+                <option value="apt_chart_85_29110.png" data-code="29110">광주광역시 동구</option>
+                <option value="apt_chart_85_29140.png" data-code="29140">광주광역시 서구</option>
+                <option value="apt_chart_85_29155.png" data-code="29155">광주광역시 남구</option>
+                <option value="apt_chart_85_29170.png" data-code="29170">광주광역시 북구</option>
+                <option value="apt_chart_85_29200.png" data-code="29200">광주광역시 광산구</option>
+                <option value="apt_chart_85_30110.png" data-code="30110">대전광역시 동구</option>
+                <option value="apt_chart_85_30140.png" data-code="30140">대전광역시 중구</option>
+                <option value="apt_chart_85_30170.png" data-code="30170">대전광역시 서구</option>
+                <option value="apt_chart_85_30200.png" data-code="30200">대전광역시 유성구</option>
+                <option value="apt_chart_85_30230.png" data-code="30230">대전광역시 대덕구</option>
+                <option value="apt_chart_85_31110.png" data-code="31110">울산광역시 중구</option>
+                <option value="apt_chart_85_31140.png" data-code="31140">울산광역시 남구</option>
+                <option value="apt_chart_85_31170.png" data-code="31170">울산광역시 동구</option>
+                <option value="apt_chart_85_31200.png" data-code="31200">울산광역시 북구</option>
+                <option value="apt_chart_85_31710.png" data-code="31710">울산광역시 울주군</option>
+                <option value="apt_chart_85_36110.png" data-code="36110">세종특별자치시</option>
+                <option value="apt_chart_85_41111.png" data-code="41111">경기도 수원시 장안구</option>
+                <option value="apt_chart_85_41113.png" data-code="41113">경기도 수원시 권선구</option>
+                <option value="apt_chart_85_41115.png" data-code="41115">경기도 수원시 팔달구</option>
+                <option value="apt_chart_85_41117.png" data-code="41117">경기도 수원시 영통구</option>
+                <option value="apt_chart_85_41131.png" data-code="41131">경기도 성남시 수정구</option>
+                <option value="apt_chart_85_41133.png" data-code="41133">경기도 성남시 중원구</option>
+                <option value="apt_chart_85_41135.png" data-code="41135">경기도 성남시 분당구</option>
+                <option value="apt_chart_85_41150.png" data-code="41150">경기도 의정부시</option>
+                <option value="apt_chart_85_41171.png" data-code="41171">경기도 안양시 만안구</option>
+                <option value="apt_chart_85_41173.png" data-code="41173">경기도 안양시 동안구</option>
+                <option value="apt_chart_85_41192.png" data-code="41192">경기도 부천시 원미구</option>
+                <option value="apt_chart_85_41194.png" data-code="41194">경기도 부천시 소사구</option>
+                <option value="apt_chart_85_41196.png" data-code="41196">경기도 부천시 오정구</option>
+                <option value="apt_chart_85_41210.png" data-code="41210">경기도 광명시</option>
+                <option value="apt_chart_85_41220.png" data-code="41220">경기도 평택시</option>
+                <option value="apt_chart_85_41250.png" data-code="41250">경기도 동두천시</option>
+                <option value="apt_chart_85_41271.png" data-code="41271">경기도 안산시 상록구</option>
+                <option value="apt_chart_85_41273.png" data-code="41273">경기도 안산시 단원구</option>
+                <option value="apt_chart_85_41281.png" data-code="41281">경기도 고양시 덕양구</option>
+                <option value="apt_chart_85_41285.png" data-code="41285">경기도 고양시 일산동구</option>
+                <option value="apt_chart_85_41287.png" data-code="41287">경기도 고양시 일산서구</option>
+                <option value="apt_chart_85_41290.png" data-code="41290">경기도 과천시</option>
+                <option value="apt_chart_85_41310.png" data-code="41310">경기도 구리시</option>
+                <option value="apt_chart_85_41360.png" data-code="41360">경기도 남양주시</option>
+                <option value="apt_chart_85_41370.png" data-code="41370">경기도 오산시</option>
+                <option value="apt_chart_85_41390.png" data-code="41390">경기도 시흥시</option>
+                <option value="apt_chart_85_41410.png" data-code="41410">경기도 군포시</option>
+                <option value="apt_chart_85_41430.png" data-code="41430">경기도 의왕시</option>
+                <option value="apt_chart_85_41450.png" data-code="41450">경기도 하남시</option>
+                <option value="apt_chart_85_41461.png" data-code="41461">경기도 용인시 처인구</option>
+                <option value="apt_chart_85_41463.png" data-code="41463">경기도 용인시 기흥구</option>
+                <option value="apt_chart_85_41465.png" data-code="41465">경기도 용인시 수지구</option>
+                <option value="apt_chart_85_41480.png" data-code="41480">경기도 파주시</option>
+                <option value="apt_chart_85_41500.png" data-code="41500">경기도 이천시</option>
+                <option value="apt_chart_85_41550.png" data-code="41550">경기도 안성시</option>
+                <option value="apt_chart_85_41570.png" data-code="41570">경기도 김포시</option>
+                <option value="apt_chart_85_41590.png" data-code="41590">경기도 화성시</option>
+                <option value="apt_chart_85_41610.png" data-code="41610">경기도 광주시</option>
+                <option value="apt_chart_85_41630.png" data-code="41630">경기도 양주시</option>
+                <option value="apt_chart_85_41650.png" data-code="41650">경기도 포천시</option>
+                <option value="apt_chart_85_41670.png" data-code="41670">경기도 여주시</option>
+                <option value="apt_chart_85_41800.png" data-code="41800">경기도 연천군</option>
+                <option value="apt_chart_85_41820.png" data-code="41820">경기도 가평군</option>
+                <option value="apt_chart_85_41830.png" data-code="41830">경기도 양평군</option>
+                <option value="apt_chart_85_43111.png" data-code="43111">충천북도 청주시 상당구</option>
+                <option value="apt_chart_85_43112.png" data-code="43112">충천북도 청주시 서원구</option>
+                <option value="apt_chart_85_43113.png" data-code="43113">충천북도 청주시 흥덕구</option>
+                <option value="apt_chart_85_43114.png" data-code="43114">충천북도 청주시 청원구</option>
+                <option value="apt_chart_85_43130.png" data-code="43130">충천북도 충주시</option>
+                <option value="apt_chart_85_43150.png" data-code="43150">충천북도 제천시</option>
+                <option value="apt_chart_85_43720.png" data-code="43720">충천북도 보은군</option>
+                <option value="apt_chart_85_43730.png" data-code="43730">충천북도 옥천군</option>
+                <option value="apt_chart_85_43740.png" data-code="43740">충천북도 영동군</option>
+                <option value="apt_chart_85_43745.png" data-code="43745">충천북도 증평군</option>
+                <option value="apt_chart_85_43750.png" data-code="43750">충천북도 진천군</option>
+                <option value="apt_chart_85_43760.png" data-code="43760">충천북도 괴산군</option>
+                <option value="apt_chart_85_43770.png" data-code="43770">충천북도 음성군</option>
+                <option value="apt_chart_85_43800.png" data-code="43800">충천북도 단양군</option>
+                <option value="apt_chart_85_44131.png" data-code="44131">충청남도 천안시 동남구</option>
+                <option value="apt_chart_85_44133.png" data-code="44133">충청남도 천안시 서북구</option>
+                <option value="apt_chart_85_44150.png" data-code="44150">충청남도 공주시</option>
+                <option value="apt_chart_85_44180.png" data-code="44180">충청남도 보령시</option>
+                <option value="apt_chart_85_44200.png" data-code="44200">충청남도 아산시</option>
+                <option value="apt_chart_85_44210.png" data-code="44210">충청남도 서산시</option>
+                <option value="apt_chart_85_44230.png" data-code="44230">충청남도 논산시</option>
+                <option value="apt_chart_85_44250.png" data-code="44250">충청남도 계룡시</option>
+                <option value="apt_chart_85_44270.png" data-code="44270">충청남도 당진시</option>
+                <option value="apt_chart_85_44710.png" data-code="44710">충청남도 금산군</option>
+                <option value="apt_chart_85_44760.png" data-code="44760">충청남도 부여군</option>
+                <option value="apt_chart_85_44770.png" data-code="44770">충청남도 서천군</option>
+                <option value="apt_chart_85_44790.png" data-code="44790">충청남도 청양군</option>
+                <option value="apt_chart_85_44800.png" data-code="44800">충청남도 홍성군</option>
+                <option value="apt_chart_85_44810.png" data-code="44810">충청남도 예산군</option>
+                <option value="apt_chart_85_44825.png" data-code="44825">충청남도 태안군</option>
+                <option value="apt_chart_85_46110.png" data-code="46110">전라남도 목포시</option>
+                <option value="apt_chart_85_46130.png" data-code="46130">전라남도 여수시</option>
+                <option value="apt_chart_85_46150.png" data-code="46150">전라남도 순천시</option>
+                <option value="apt_chart_85_46170.png" data-code="46170">전라남도 나주시</option>
+                <option value="apt_chart_85_46230.png" data-code="46230">전라남도 광양시</option>
+                <option value="apt_chart_85_46710.png" data-code="46710">전라남도 담양군</option>
+                <option value="apt_chart_85_46720.png" data-code="46720">전라남도 곡성군</option>
+                <option value="apt_chart_85_46730.png" data-code="46730">전라남도 구례군</option>
+                <option value="apt_chart_85_46770.png" data-code="46770">전라남도 고흥군</option>
+                <option value="apt_chart_85_46780.png" data-code="46780">전라남도 보성군</option>
+                <option value="apt_chart_85_46790.png" data-code="46790">전라남도 화순군</option>
+                <option value="apt_chart_85_46800.png" data-code="46800">전라남도 장흥군</option>
+                <option value="apt_chart_85_46810.png" data-code="46810">전라남도 강진군</option>
+                <option value="apt_chart_85_46820.png" data-code="46820">전라남도 해남군</option>
+                <option value="apt_chart_85_46830.png" data-code="46830">전라남도 영암군</option>
+                <option value="apt_chart_85_46840.png" data-code="46840">전라남도 무안군</option>
+                <option value="apt_chart_85_46860.png" data-code="46860">전라남도 함평군</option>
+                <option value="apt_chart_85_46870.png" data-code="46870">전라남도 영광군</option>
+                <option value="apt_chart_85_46880.png" data-code="46880">전라남도 장성군</option>
+                <option value="apt_chart_85_46890.png" data-code="46890">전라남도 완도군</option>
+                <option value="apt_chart_85_46900.png" data-code="46900">전라남도 진도군</option>
+                <option value="apt_chart_85_46910.png" data-code="46910">전라남도 신안군</option>
+                <option value="apt_chart_85_47111.png" data-code="47111">경상북도 포항시 남구</option>
+                <option value="apt_chart_85_47113.png" data-code="47113">경상북도 포항시 북구</option>
+                <option value="apt_chart_85_47130.png" data-code="47130">경상북도 경주시</option>
+                <option value="apt_chart_85_47150.png" data-code="47150">경상북도 김천시</option>
+                <option value="apt_chart_85_47170.png" data-code="47170">경상북도 안동시</option>
+                <option value="apt_chart_85_47190.png" data-code="47190">경상북도 구미시</option>
+                <option value="apt_chart_85_47210.png" data-code="47210">경상북도 영주시</option>
+                <option value="apt_chart_85_47230.png" data-code="47230">경상북도 영천시</option>
+                <option value="apt_chart_85_47250.png" data-code="47250">경상북도 상주시</option>
+                <option value="apt_chart_85_47280.png" data-code="47280">경상북도 문경시</option>
+                <option value="apt_chart_85_47290.png" data-code="47290">경상북도 경산시</option>
+                <option value="apt_chart_85_47730.png" data-code="47730">경상북도 의성군</option>
+                <option value="apt_chart_85_47750.png" data-code="47750">경상북도 청송군</option>
+                <option value="apt_chart_85_47760.png" data-code="47760">경상북도 영양군</option>
+                <option value="apt_chart_85_47770.png" data-code="47770">경상북도 영덕군</option>
+                <option value="apt_chart_85_47820.png" data-code="47820">경상북도 청도군</option>
+                <option value="apt_chart_85_47830.png" data-code="47830">경상북도 고령군</option>
+                <option value="apt_chart_85_47840.png" data-code="47840">경상북도 성주군</option>
+                <option value="apt_chart_85_47850.png" data-code="47850">경상북도 칠곡군</option>
+                <option value="apt_chart_85_47900.png" data-code="47900">경상북도 예천군</option>
+                <option value="apt_chart_85_47920.png" data-code="47920">경상북도 봉화군</option>
+                <option value="apt_chart_85_47930.png" data-code="47930">경상북도 울진군</option>
+                <option value="apt_chart_85_47940.png" data-code="47940">경상북도 울릉군</option>
+                <option value="apt_chart_85_48121.png" data-code="48121">경상남도 창원시 의창구</option>
+                <option value="apt_chart_85_48123.png" data-code="48123">경상남도 창원시 성산구</option>
+                <option value="apt_chart_85_48125.png" data-code="48125">경상남도 창원시 마산합포구</option>
+                <option value="apt_chart_85_48127.png" data-code="48127">경상남도 창원시 마산회원구</option>
+                <option value="apt_chart_85_48129.png" data-code="48129">경상남도 진해구</option>
+                <option value="apt_chart_85_48170.png" data-code="48170">경상남도 진주시</option>
+                <option value="apt_chart_85_48220.png" data-code="48220">경상남도 통영시</option>
+                <option value="apt_chart_85_48240.png" data-code="48240">경상남도 사천시</option>
+                <option value="apt_chart_85_48250.png" data-code="48250">경상남도 김해시</option>
+                <option value="apt_chart_85_48270.png" data-code="48270">경상남도 밀양시</option>
+                <option value="apt_chart_85_48310.png" data-code="48310">경상남도 거제시</option>
+                <option value="apt_chart_85_48330.png" data-code="48330">경상남도 양산시</option>
+                <option value="apt_chart_85_48720.png" data-code="48720">경상남도 의령군</option>
+                <option value="apt_chart_85_48730.png" data-code="48730">경상남도 함안군</option>
+                <option value="apt_chart_85_48740.png" data-code="48740">경상남도 창녕군</option>
+                <option value="apt_chart_85_48820.png" data-code="48820">경상남도 고성군</option>
+                <option value="apt_chart_85_48840.png" data-code="48840">경상남도 남해군</option>
+                <option value="apt_chart_85_48850.png" data-code="48850">경상남도 하동군</option>
+                <option value="apt_chart_85_48860.png" data-code="48860">경상남도 산청군</option>
+                <option value="apt_chart_85_48870.png" data-code="48870">경상남도 함양군</option>
+                <option value="apt_chart_85_48880.png" data-code="48880">경상남도 거창군</option>
+                <option value="apt_chart_85_48890.png" data-code="48890">경상남도 합천군</option>
+                <option value="apt_chart_85_50110.png" data-code="50110">제주특별자치도 제주시</option>
+                <option value="apt_chart_85_50130.png" data-code="50130">제주특별자치도 서귀포시</option>
+                <option value="apt_chart_85_51110.png" data-code="51110">강원특별자치도 춘천시</option>
+                <option value="apt_chart_85_51130.png" data-code="51130">강원특별자치도 원주시</option>
+                <option value="apt_chart_85_51150.png" data-code="51150">강원특별자치도 강릉시</option>
+                <option value="apt_chart_85_51170.png" data-code="51170">강원특별자치도 동해시</option>
+                <option value="apt_chart_85_51190.png" data-code="51190">강원특별자치도 태백시</option>
+                <option value="apt_chart_85_51210.png" data-code="51210">강원특별자치도 속초시</option>
+                <option value="apt_chart_85_51230.png" data-code="51230">강원특별자치도 삼척시</option>
+                <option value="apt_chart_85_51720.png" data-code="51720">강원특별자치도 홍천군</option>
+                <option value="apt_chart_85_51730.png" data-code="51730">강원특별자치도 횡성군</option>
+                <option value="apt_chart_85_51750.png" data-code="51750">강원특별자치도 영월군</option>
+                <option value="apt_chart_85_51760.png" data-code="51760">강원특별자치도 평창군</option>
+                <option value="apt_chart_85_51770.png" data-code="51770">강원특별자치도 정선군</option>
+                <option value="apt_chart_85_51780.png" data-code="51780">강원특별자치도 철원군</option>
+                <option value="apt_chart_85_51790.png" data-code="51790">강원특별자치도 화천군</option>
+                <option value="apt_chart_85_51800.png" data-code="51800">강원특별자치도 양구군</option>
+                <option value="apt_chart_85_51810.png" data-code="51810">강원특별자치도 인제군</option>
+                <option value="apt_chart_85_51820.png" data-code="51820">강원특별자치도 고성군</option>
+                <option value="apt_chart_85_51830.png" data-code="51830">강원특별자치도 양양군</option>
+                <option value="apt_chart_85_52111.png" data-code="52111">전북특별자치도 전주시 완산구</option>
+                <option value="apt_chart_85_52113.png" data-code="52113">전북특별자치도 전주시 덕진구</option>
+                <option value="apt_chart_85_52130.png" data-code="52130">전북특별자치도 군산시</option>
+                <option value="apt_chart_85_52140.png" data-code="52140">전북특별자치도 익산시</option>
+                <option value="apt_chart_85_52180.png" data-code="52180">전북특별자치도 정읍시</option>
+                <option value="apt_chart_85_52190.png" data-code="52190">전북특별자치도 남원시</option>
+                <option value="apt_chart_85_52210.png" data-code="52210">전북특별자치도 김제시</option>
+                <option value="apt_chart_85_52710.png" data-code="52710">전북특별자치도 완주군</option>
+                <option value="apt_chart_85_52720.png" data-code="52720">전북특별자치도 진안군</option>
+                <option value="apt_chart_85_52730.png" data-code="52730">전북특별자치도 무주군</option>
+                <option value="apt_chart_85_52740.png" data-code="52740">전북특별자치도 장수군</option>
+                <option value="apt_chart_85_52750.png" data-code="52750">전북특별자치도 임실군</option>
+                <option value="apt_chart_85_52770.png" data-code="52770">전북특별자치도 순창군</option>
+                <option value="apt_chart_85_52790.png" data-code="52790">전북특별자치도 고창군</option>
+                <option value="apt_chart_85_52800.png" data-code="52800">전북특별자치도 부안군</option>
+            </select>
 
-        <option value="apt_chart_85_11350.png">서울특별시 노원구</option>
-        <option value="apt_chart_85_11380.png">서울특별시 은평구</option>
-        <option value="apt_chart_85_11410.png">서울특별시 서대문구</option>
-        <option value="apt_chart_85_11440.png">서울특별시 마포구</option>
-        <option value="apt_chart_85_11470.png">서울특별시 양천구</option>
-        <option value="apt_chart_85_11500.png">서울특별시 강서구</option>
-        <option value="apt_chart_85_11530.png">서울특별시 구로구</option>
-        <option value="apt_chart_85_11545.png">서울특별시 금천구</option>
-        <option value="apt_chart_85_11560.png">서울특별시 영등포구</option>
-        <option value="apt_chart_85_11590.png">서울특별시 동작구</option>
-        
-        <option value="apt_chart_85_11620.png">서울특별시 관악구</option>
-        <option value="apt_chart_85_11650.png">서울특별시 서초구</option>
-        <option value="apt_chart_85_11680.png">서울특별시 강남구</option>
-        <option value="apt_chart_85_11710.png">서울특별시 송파구</option>
-        <option value="apt_chart_85_11740.png">서울특별시 강동구</option>
-        <option value="apt_chart_85_26110.png">부산광역시 중구</option>
-        <option value="apt_chart_85_26140.png">부산광역시 서구</option>
-        <option value="apt_chart_85_26170.png">부산광역시 동구</option>
-        <option value="apt_chart_85_26200.png">부산광역시 영도구</option>
-        <option value="apt_chart_85_26230.png">부산광역시 부산진구</option>
-        
-        <option value="apt_chart_85_26260.png">부산광역시 동래구</option>
-        <option value="apt_chart_85_26290.png">부산광역시 남구</option>
-        <option value="apt_chart_85_26320.png">부산광역시 북구</option>
-        <option value="apt_chart_85_26350.png">부산광역시 해운대구</option>
-        <option value="apt_chart_85_26380.png">부산광역시 사하구</option>
-        <option value="apt_chart_85_26410.png">부산광역시 금정구</option>
-        <option value="apt_chart_85_26440.png">부산광역시 강서구</option>
-        <option value="apt_chart_85_26470.png">부산광역시 연제구</option>
-        <option value="apt_chart_85_26500.png">부산광역시 수영구</option>
-        <option value="apt_chart_85_26530.png">부산광역시 사상구</option>
+            <div class="side-card">
+                <strong>선택된 지역</strong>
+                <p id="selectedRegionText">아직 선택된 지역이 없습니다.</p>
+            </div>
 
-        <option value="apt_chart_85_26710.png">부산광역시 기장군</option>
-        <option value="apt_chart_85_27110.png">대구광역시 중구</option>
-        <option value="apt_chart_85_27140.png">대구광역시 동구</option>
-        <option value="apt_chart_85_27170.png">대구광역시 서구</option>
-        <option value="apt_chart_85_27200.png">대구광역시 남구</option>
-        <option value="apt_chart_85_27230.png">대구광역시 북구</option>
-        <option value="apt_chart_85_27260.png">대구광역시 수성구</option>
-        <option value="apt_chart_85_27290.png">대구광역시 달서구</option>
-        <option value="apt_chart_85_27710.png">대구광역시 달성군</option>
-        <option value="apt_chart_85_27720.png">대구광역시 군위군</option>
+            <div class="side-card">
+                <strong>제공 데이터</strong>
+                <p>전국 시군구 단위 아파트 실거래가 흐름을 2006.01부터 직전월까지 차트와 리포트로 제공합니다.</p>
+            </div>
 
-        <option value="apt_chart_85_28110.png">인천광역시 중구</option>
-        <option value="apt_chart_85_28140.png">인천광역시 동구</option>
-        <option value="apt_chart_85_28177.png">인천광역시 미추홀구</option>
-        <option value="apt_chart_85_28185.png">인천광역시 연수구</option>
-        <option value="apt_chart_85_28200.png">인천광역시 남동구</option>
-        <option value="apt_chart_85_28237.png">인천광역시 부평구</option>
-        <option value="apt_chart_85_28245.png">인천광역시 계양구</option>
-        <option value="apt_chart_85_28260.png">인천광역시 서구</option>
-        <option value="apt_chart_85_28710.png">인천광역시 강화군</option>
-        <option value="apt_chart_85_29110.png">광주광역시 동구</option>
+            <div class="side-card">
+                <strong>이용 방법</strong>
+                <p>지역을 선택하면 실거래가 차트, 위치 지도, 분석 리포트를 한 화면에서 확인할 수 있습니다.</p>
+            </div>
+        </aside>
 
-        <option value="apt_chart_85_29140.png">광주광역시 서구</option>
-        <option value="apt_chart_85_29155.png">광주광역시 남구</option>
-        <option value="apt_chart_85_29170.png">광주광역시 북구</option>
-        <option value="apt_chart_85_29200.png">광주광역시 광산구</option>
-        <option value="apt_chart_85_30110.png">대전광역시 동구</option>
-        <option value="apt_chart_85_30140.png">대전광역시 중구</option>
-        <option value="apt_chart_85_30170.png">대전광역시 서구</option>
-        <option value="apt_chart_85_30200.png">대전광역시 유성구</option>
-        <option value="apt_chart_85_30230.png">대전광역시 대덕구</option>
-        <option value="apt_chart_85_31110.png">울산광역시 중구</option>
+        <main class="main">
+            <header class="topbar">
+                <div>
+                    <p class="eyebrow">Korea Apartment Market Intelligence</p>
+                    <h1 id="pageTitle">지역별 아파트 실거래가 흐름을 확인하세요</h1>
+                </div>
+                <div class="top-actions">
+                    <button class="icon-button" type="button" title="새로고침" aria-label="새로고침" id="refreshButton">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M20 12a8 8 0 1 1-2.34-5.66M20 4v5h-5"/>
+                        </svg>
+                    </button>
+                </div>
+            </header>
 
-        <option value="apt_chart_85_31140.png">울산광역시 남구</option>
-        <option value="apt_chart_85_31170.png">울산광역시 동구</option>
-        <option value="apt_chart_85_31200.png">울산광역시 북구</option>
-        <option value="apt_chart_85_31710.png">울산광역시 울주군</option>
-        <option value="apt_chart_85_36110.png">세종특별자치시</option>
-        <option value="apt_chart_85_41111.png">경기도 수원시 장안구</option>
-        <option value="apt_chart_85_41113.png">경기도 수원시 권선구</option>
-        <option value="apt_chart_85_41115.png">경기도 수원시 팔달구</option>
-        <option value="apt_chart_85_41117.png">경기도 수원시 영통구</option>
-        <option value="apt_chart_85_41131.png">경기도 성남시 수정구</option>
+            <section class="kpi-grid" aria-label="시장 지표">
+                <article class="kpi">
+                    <span>선택 지역</span>
+                    <strong id="kpiRegion">대기</strong>
+                    <em id="kpiCode">지역을 선택하세요</em>
+                </article>
+                <article class="kpi">
+                    <span>데이터 범위</span>
+                    <strong id="dataRange">2006.01-</strong>
+                    <em>리포트 기준</em>
+                </article>
+                <article class="kpi">
+                    <span>매매가 흐름</span>
+                    <strong id="kpiTrend">-</strong>
+                    <em>차트 로딩 후 확인</em>
+                </article>
+                <article class="kpi">
+                    <span>제공 자료</span>
+                    <strong>차트 + 리포트</strong>
+                    <em>가격 흐름 이미지와 분석 문서</em>
+                </article>
+            </section>
 
-        <option value="apt_chart_85_41133.png">경기도 성남시 중원구</option>
-        <option value="apt_chart_85_41135.png">경기도 성남시 분당구</option>
-        <option value="apt_chart_85_41150.png">경기도 의정부시</option>
-        <option value="apt_chart_85_41171.png">경기도 안양시 만안구</option>
-        <option value="apt_chart_85_41173.png">경기도 안양시 동안구</option>
-        <option value="apt_chart_85_41192.png">경기도 부천시 원미구</option>
-        <option value="apt_chart_85_41194.png">경기도 부천시 소사구</option>
-        <option value="apt_chart_85_41196.png">경기도 부천시 오정구</option>
-        <option value="apt_chart_85_41210.png">경기도 광명시</option>
-        <option value="apt_chart_85_41220.png">경기도 평택시</option>
+            <p id="statusText" class="visually-hidden" aria-live="polite">선택을 기다리는 중</p>
 
-        <option value="apt_chart_85_41250.png">경기도 동두천시</option>
-        <option value="apt_chart_85_41271.png">경기도 안산시 상록구</option>
-        <option value="apt_chart_85_41273.png">경기도 안산시 단원구</option>
-        <option value="apt_chart_85_41281.png">경기도 고양시 덕양구</option>
-        <option value="apt_chart_85_41285.png">경기도 고양시 일산동구</option>
-        <option value="apt_chart_85_41287.png">경기도 고양시 일산서구</option>
-        <option value="apt_chart_85_41290.png">경기도 과천시</option>
-        <option value="apt_chart_85_41310.png">경기도 구리시</option>
-        <option value="apt_chart_85_41360.png">경기도 남양주시</option>
-        <option value="apt_chart_85_41370.png">경기도 오산시</option>
+            <section class="dashboard-grid">
+                <article class="panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">지역 위치 지도</h2>
+                        <span class="panel-note" id="mapLabel">지역 미선택</span>
+                    </div>
+                    <div class="market-map">
+                        <div class="map-board" id="mapStage" aria-label="선택 지역 지도">
+                            <div class="map-empty">
+                                <div>
+                                    <strong>지역을 선택하면 지도가 표시됩니다</strong>
+                                    <span>선택한 시군구 이름으로 위치를 검색합니다.</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="legend">
+                            <span>지도 검색 기준: <b id="mapQueryText">-</b></span>
+                            <a class="map-link" id="openMap" href="#" target="_blank" rel="noopener" aria-disabled="true">지도에서 열기</a>
+                        </div>
+                    </div>
+                </article>
 
-        <option value="apt_chart_85_41390.png">경기도 시흥시</option>
-        <option value="apt_chart_85_41410.png">경기도 군포시</option>
-        <option value="apt_chart_85_41430.png">경기도 의왕시</option>
-        <option value="apt_chart_85_41450.png">경기도 하남시</option>
-        <option value="apt_chart_85_41461.png">경기도 용인시 처인구</option>
-        <option value="apt_chart_85_41463.png">경기도 용인시 기흥구</option>
-        <option value="apt_chart_85_41465.png">경기도 용인시 수지구</option>
-        <option value="apt_chart_85_41480.png">경기도 파주시</option>
-        <option value="apt_chart_85_41500.png">경기도 이천시</option>
-        <option value="apt_chart_85_41550.png">경기도 안성시</option>
+                <article class="panel chart-panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">매매가 흐름</h2>
+                        <span class="panel-note" id="chartLabel">지역 미선택</span>
+                    </div>
+                    <div class="chart-stage" id="chartStage">
+                        <div class="empty-state">
+                            <div>
+                                <strong>분석할 지역을 선택하세요</strong>
+                                <span>지역을 선택하면 실거래가 차트와 분석 리포트가 표시됩니다.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="insight-grid">
+                        <div class="mini-card">
+                            <b>1. 시장 흐름 읽기</b>
+                            <p id="summaryText">선택 지역의 장기 가격 흐름과 최근 변화를 요약합니다.</p>
+                        </div>
+                        <div class="mini-card">
+                            <b>2. 리스크 신호 읽기</b>
+                            <p>단기 급등락, 이동평균선 변화, 조정 가능성을 함께 확인하세요.</p>
+                        </div>
+                        <div class="mini-card">
+                            <b>3. 분석 리포트 확인</b>
+                            <p>상세 해석은 아래 리포트 패널에서 바로 확인할 수 있습니다.</p>
+                        </div>
+                    </div>
+                </article>
 
-        <option value="apt_chart_85_41570.png">경기도 김포시</option>
-        <option value="apt_chart_85_41590.png">경기도 화성시</option>
-        <option value="apt_chart_85_41610.png">경기도 광주시</option>
-        <option value="apt_chart_85_41630.png">경기도 양주시</option>
-        <option value="apt_chart_85_41650.png">경기도 포천시</option>
-        <option value="apt_chart_85_41670.png">경기도 여주시</option>
-        <option value="apt_chart_85_41800.png">경기도 연천군</option>
-        <option value="apt_chart_85_41820.png">경기도 가평군</option>
-        <option value="apt_chart_85_41830.png">경기도 양평군</option>
-        <option value="apt_chart_85_43111.png">충천북도 청주시 상당구</option>
+                <article class="panel report-panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">지역 분석 리포트</h2>
+                    </div>
+                    <div id="reportStage" class="report-empty">지역을 선택하면 리포트가 표시됩니다.</div>
+                </article>
+            </section>
 
-        <option value="apt_chart_85_43112.png">충천북도 청주시 서원구</option>
-        <option value="apt_chart_85_43113.png">충천북도 청주시 흥덕구</option>
-        <option value="apt_chart_85_43114.png">충천북도 청주시 청원구</option>
-        <option value="apt_chart_85_43130.png">충천북도 충주시</option>
-        <option value="apt_chart_85_43150.png">충천북도 제천시</option>
-        <option value="apt_chart_85_43720.png">충천북도 보은군</option>
-        <option value="apt_chart_85_43730.png">충천북도 옥천군</option>
-        <option value="apt_chart_85_43740.png">충천북도 영동군</option>
-        <option value="apt_chart_85_43745.png">충천북도 증평군</option>
-        <option value="apt_chart_85_43750.png">충천북도 진천군</option>
+            <section class="report-index-link" aria-labelledby="reportIndexTitle">
+                <div>
+                    <h2 id="reportIndexTitle">지역별 분석 리포트</h2>
+                    <p>전국 시군구별 아파트 실거래가 분석 리포트를 전체 목록에서 확인할 수 있습니다.</p>
+                </div>
+                <a class="primary-button" href="reports.html">전체 지역 리포트 보기</a>
+            </section>
 
-        <option value="apt_chart_85_43760.png">충천북도 괴산군</option>
-        <option value="apt_chart_85_43770.png">충천북도 음성군</option>
-        <option value="apt_chart_85_43800.png">충천북도 단양군</option>
-        <option value="apt_chart_85_44131.png">충청남도 천안시 동남구</option>
-        <option value="apt_chart_85_44133.png">충청남도 천안시 서북구</option>
-        <option value="apt_chart_85_44150.png">충청남도 공주시</option>
-        <option value="apt_chart_85_44180.png">충청남도 보령시</option>
-        <option value="apt_chart_85_44200.png">충청남도 아산시</option>
-        <option value="apt_chart_85_44210.png">충청남도 서산시</option>
-        <option value="apt_chart_85_44230.png">충청남도 논산시</option>
-
-        <option value="apt_chart_85_44250.png">충청남도 계룡시</option>
-        <option value="apt_chart_85_44270.png">충청남도 당진시</option>
-        <option value="apt_chart_85_44710.png">충청남도 금산군</option>
-        <option value="apt_chart_85_44760.png">충청남도 부여군</option>
-        <option value="apt_chart_85_44770.png">충청남도 서천군</option>
-        <option value="apt_chart_85_44790.png">충청남도 청양군</option>
-        <option value="apt_chart_85_44800.png">충청남도 홍성군</option>
-        <option value="apt_chart_85_44810.png">충청남도 예산군</option>
-        <option value="apt_chart_85_44825.png">충청남도 태안군</option>
-        <option value="apt_chart_85_46110.png">전라남도 목포시</option>
-
-        <option value="apt_chart_85_46130.png">전라남도 여수시</option>
-        <option value="apt_chart_85_46150.png">전라남도 순천시</option>
-        <option value="apt_chart_85_46170.png">전라남도 나주시</option>
-        <option value="apt_chart_85_46230.png">전라남도 광양시</option>
-        <option value="apt_chart_85_46710.png">전라남도 담양군</option>
-        <option value="apt_chart_85_46720.png">전라남도 곡성군</option>
-        <option value="apt_chart_85_46730.png">전라남도 구례군</option>
-        <option value="apt_chart_85_46770.png">전라남도 고흥군</option>
-        <option value="apt_chart_85_46780.png">전라남도 보성군</option>
-        <option value="apt_chart_85_46790.png">전라남도 화순군</option>
-
-        <option value="apt_chart_85_46800.png">전라남도 장흥군</option>
-        <option value="apt_chart_85_46810.png">전라남도 강진군</option>
-        <option value="apt_chart_85_46820.png">전라남도 해남군</option>
-        <option value="apt_chart_85_46830.png">전라남도 영암군</option>
-        <option value="apt_chart_85_46840.png">전라남도 무안군</option>
-        <option value="apt_chart_85_46860.png">전라남도 함평군</option>
-        <option value="apt_chart_85_46870.png">전라남도 영광군</option>
-        <option value="apt_chart_85_46880.png">전라남도 장성군</option>
-        <option value="apt_chart_85_46890.png">전라남도 완도군</option>
-        <option value="apt_chart_85_46900.png">전라남도 진도군</option>
-
-        <option value="apt_chart_85_46910.png">전라남도 신안군</option>
-        <option value="apt_chart_85_47111.png">경상북도 포항시 남구</option>
-        <option value="apt_chart_85_47113.png">경상북도 포항시 북구</option>
-        <option value="apt_chart_85_47130.png">경상북도 경주시</option>
-        <option value="apt_chart_85_47150.png">경상북도 김천시</option>
-        <option value="apt_chart_85_47170.png">경상북도 안동시</option>
-        <option value="apt_chart_85_47190.png">경상북도 구미시</option>
-        <option value="apt_chart_85_47210.png">경상북도 영주시</option>
-        <option value="apt_chart_85_47230.png">경상북도 영천시</option>
-        <option value="apt_chart_85_47250.png">경상북도 상주시</option>
-
-        <option value="apt_chart_85_47280.png">경상북도 문경시</option>
-        <option value="apt_chart_85_47290.png">경상북도 경산시</option>
-        <option value="apt_chart_85_47730.png">경상북도 의성군</option>
-        <option value="apt_chart_85_47750.png">경상북도 청송군</option>
-        <option value="apt_chart_85_47760.png">경상북도 영양군</option>
-        <option value="apt_chart_85_47770.png">경상북도 영덕군</option>
-        <option value="apt_chart_85_47820.png">경상북도 청도군</option>
-        <option value="apt_chart_85_47830.png">경상북도 고령군</option>
-        <option value="apt_chart_85_47840.png">경상북도 성주군</option>
-        <option value="apt_chart_85_47850.png">경상북도 칠곡군</option>
-
-        <option value="apt_chart_85_47900.png">경상북도 예천군</option>
-        <option value="apt_chart_85_47920.png">경상북도 봉화군</option>
-        <option value="apt_chart_85_47930.png">경상북도 울진군</option>
-        <option value="apt_chart_85_47940.png">경상북도 울릉군</option>
-        <option value="apt_chart_85_48121.png">경상남도 창원시 의창구</option>
-        <option value="apt_chart_85_48123.png">경상남도 창원시 성산구</option>
-        <option value="apt_chart_85_48125.png">경상남도 창원시 마산합포구</option>
-        <option value="apt_chart_85_48127.png">경상남도 창원시 마산회원구</option>
-        <option value="apt_chart_85_48129.png">경상남도 진해구</option>
-        <option value="apt_chart_85_48170.png">경상남도 진주시</option>
-
-        <option value="apt_chart_85_48220.png">경상남도 통영시</option>
-        <option value="apt_chart_85_48240.png">경상남도 사천시</option>
-        <option value="apt_chart_85_48250.png">경상남도 김해시</option>
-        <option value="apt_chart_85_48270.png">경상남도 밀양시</option>
-        <option value="apt_chart_85_48310.png">경상남도 거제시</option>
-        <option value="apt_chart_85_48330.png">경상남도 양산시</option>
-        <option value="apt_chart_85_48720.png">경상남도 의령군</option>
-        <option value="apt_chart_85_48730.png">경상남도 함안군</option>
-        <option value="apt_chart_85_48740.png">경상남도 창녕군</option>
-        <option value="apt_chart_85_48820.png">경상남도 고성군</option>
-
-        <option value="apt_chart_85_48840.png">경상남도 남해군</option>
-        <option value="apt_chart_85_48850.png">경상남도 하동군</option>
-        <option value="apt_chart_85_48860.png">경상남도 산청군</option>
-        <option value="apt_chart_85_48870.png">경상남도 함양군</option>
-        <option value="apt_chart_85_48880.png">경상남도 거창군</option>
-        <option value="apt_chart_85_48890.png">경상남도 합천군</option>
-        <option value="apt_chart_85_50110.png">제주특별자치도 제주시</option>
-        <option value="apt_chart_85_50130.png">제주특별자치도 서귀포시</option>
-        <option value="apt_chart_85_51110.png">강원특별자치도 춘천시</option>
-        <option value="apt_chart_85_51130.png">강원특별자치도 원주시</option>
-
-        <option value="apt_chart_85_51150.png">강원특별자치도 강릉시</option>
-        <option value="apt_chart_85_51170.png">강원특별자치도 동해시</option>
-        <option value="apt_chart_85_51190.png">강원특별자치도 태백시</option>
-        <option value="apt_chart_85_51210.png">강원특별자치도 속초시</option>
-        <option value="apt_chart_85_51230.png">강원특별자치도 삼척시</option>
-        <option value="apt_chart_85_51720.png">강원특별자치도 홍천군</option>
-        <option value="apt_chart_85_51730.png">강원특별자치도 횡성군</option>
-        <option value="apt_chart_85_51750.png">강원특별자치도 영월군</option>
-        <option value="apt_chart_85_51760.png">강원특별자치도 평창군</option>
-        <option value="apt_chart_85_51770.png">강원특별자치도 정선군</option>
-
-        <option value="apt_chart_85_51780.png">강원특별자치도 철원군</option>
-        <option value="apt_chart_85_51790.png">강원특별자치도 화천군</option>
-        <option value="apt_chart_85_51800.png">강원특별자치도 양구군</option>
-        <option value="apt_chart_85_51810.png">강원특별자치도 인제군</option>
-        <option value="apt_chart_85_51820.png">강원특별자치도 고성군</option>
-        <option value="apt_chart_85_51830.png">강원특별자치도 양양군</option>
-        <option value="apt_chart_85_52111.png">전북특별자치도 전주시 완산구</option>
-        <option value="apt_chart_85_52113.png">전북특별자치도 전주시 덕진구</option>
-        <option value="apt_chart_85_52130.png">전북특별자치도 군산시</option>
-        <option value="apt_chart_85_52140.png">전북특별자치도 익산시</option>
-
-        <option value="apt_chart_85_52180.png">전북특별자치도 정읍시</option>
-        <option value="apt_chart_85_52190.png">전북특별자치도 남원시</option>
-        <option value="apt_chart_85_52210.png">전북특별자치도 김제시</option>
-        <option value="apt_chart_85_52710.png">전북특별자치도 완주군</option>
-        <option value="apt_chart_85_52720.png">전북특별자치도 진안군</option>
-        <option value="apt_chart_85_52730.png">전북특별자치도 무주군</option>
-        <option value="apt_chart_85_52740.png">전북특별자치도 장수군</option>
-        <option value="apt_chart_85_52750.png">전북특별자치도 임실군</option>
-        <option value="apt_chart_85_52770.png">전북특별자치도 순창군</option>
-        <option value="apt_chart_85_52790.png">전북특별자치도 고창군</option>
-
-        <option value="apt_chart_85_52800.png">전북특별자치도 부안군</option>
-
-
-    </select>
-
-    <div id="image-container">
-        <img id="addrImage" src="" alt="선택한 주소 이미지" />
-        <div id="status"></div>
+            <footer>
+                Copyright © APT. Swing 2025-<span id="year"></span>. Data source: Ministry of Land, Infrastructure and Transport (MOLIT).
+            </footer>
+        </main>
     </div>
-
-    <!-- 리포트 HTML을 표시할 iframe -->
-    <div id="report-container">
-        <iframe id="reportFrame" src="" title="아파트 리포트"></iframe>
-    </div>
-
-    <!-- 스크롤 안내 GIF -->
-    <div id="scroll-indicator" style="display:none; text-align:center; margin-top:8px;">
-        <img src="scroll.gif" alt="scroll down" style="width:120px; opacity:0.7;">
-    </div>
-
 
     <script>
-        const select = document.getElementById("addrSelect");
-        const img = document.getElementById("addrImage");
-        const status = document.getElementById("status");
-        const reportFrame = document.getElementById("reportFrame");
-        const scrollIndicator = document.getElementById("scroll-indicator");
+        const CHART_DIR = "apt_trade_chart_85/";
+        const REPORT_DIR = "apt_trade_report_85/";
+        const INDEX_REGIONS = [
+          {
+                    "code": "11110",
+                    "filename": "apt_chart_85_11110.png",
+                    "label": "서울특별시 종로구"
+          },
+          {
+                    "code": "11140",
+                    "filename": "apt_chart_85_11140.png",
+                    "label": "서울특별시 중구"
+          },
+          {
+                    "code": "11170",
+                    "filename": "apt_chart_85_11170.png",
+                    "label": "서울특별시 용산구"
+          },
+          {
+                    "code": "11200",
+                    "filename": "apt_chart_85_11200.png",
+                    "label": "서울특별시 성동구"
+          },
+          {
+                    "code": "11215",
+                    "filename": "apt_chart_85_11215.png",
+                    "label": "서울특별시 광진구"
+          },
+          {
+                    "code": "11230",
+                    "filename": "apt_chart_85_11230.png",
+                    "label": "서울특별시 동대문구"
+          },
+          {
+                    "code": "11260",
+                    "filename": "apt_chart_85_11260.png",
+                    "label": "서울특별시 중랑구"
+          },
+          {
+                    "code": "11290",
+                    "filename": "apt_chart_85_11290.png",
+                    "label": "서울특별시 성북구"
+          },
+          {
+                    "code": "11305",
+                    "filename": "apt_chart_85_11305.png",
+                    "label": "서울특별시 강북구"
+          },
+          {
+                    "code": "11320",
+                    "filename": "apt_chart_85_11320.png",
+                    "label": "서울특별시 도봉구"
+          },
+          {
+                    "code": "11350",
+                    "filename": "apt_chart_85_11350.png",
+                    "label": "서울특별시 노원구"
+          },
+          {
+                    "code": "11380",
+                    "filename": "apt_chart_85_11380.png",
+                    "label": "서울특별시 은평구"
+          },
+          {
+                    "code": "11410",
+                    "filename": "apt_chart_85_11410.png",
+                    "label": "서울특별시 서대문구"
+          },
+          {
+                    "code": "11440",
+                    "filename": "apt_chart_85_11440.png",
+                    "label": "서울특별시 마포구"
+          },
+          {
+                    "code": "11470",
+                    "filename": "apt_chart_85_11470.png",
+                    "label": "서울특별시 양천구"
+          },
+          {
+                    "code": "11500",
+                    "filename": "apt_chart_85_11500.png",
+                    "label": "서울특별시 강서구"
+          },
+          {
+                    "code": "11530",
+                    "filename": "apt_chart_85_11530.png",
+                    "label": "서울특별시 구로구"
+          },
+          {
+                    "code": "11545",
+                    "filename": "apt_chart_85_11545.png",
+                    "label": "서울특별시 금천구"
+          },
+          {
+                    "code": "11560",
+                    "filename": "apt_chart_85_11560.png",
+                    "label": "서울특별시 영등포구"
+          },
+          {
+                    "code": "11590",
+                    "filename": "apt_chart_85_11590.png",
+                    "label": "서울특별시 동작구"
+          },
+          {
+                    "code": "11620",
+                    "filename": "apt_chart_85_11620.png",
+                    "label": "서울특별시 관악구"
+          },
+          {
+                    "code": "11650",
+                    "filename": "apt_chart_85_11650.png",
+                    "label": "서울특별시 서초구"
+          },
+          {
+                    "code": "11680",
+                    "filename": "apt_chart_85_11680.png",
+                    "label": "서울특별시 강남구"
+          },
+          {
+                    "code": "11710",
+                    "filename": "apt_chart_85_11710.png",
+                    "label": "서울특별시 송파구"
+          },
+          {
+                    "code": "11740",
+                    "filename": "apt_chart_85_11740.png",
+                    "label": "서울특별시 강동구"
+          },
+          {
+                    "code": "26110",
+                    "filename": "apt_chart_85_26110.png",
+                    "label": "부산광역시 중구"
+          },
+          {
+                    "code": "26140",
+                    "filename": "apt_chart_85_26140.png",
+                    "label": "부산광역시 서구"
+          },
+          {
+                    "code": "26170",
+                    "filename": "apt_chart_85_26170.png",
+                    "label": "부산광역시 동구"
+          },
+          {
+                    "code": "26200",
+                    "filename": "apt_chart_85_26200.png",
+                    "label": "부산광역시 영도구"
+          },
+          {
+                    "code": "26230",
+                    "filename": "apt_chart_85_26230.png",
+                    "label": "부산광역시 부산진구"
+          },
+          {
+                    "code": "26260",
+                    "filename": "apt_chart_85_26260.png",
+                    "label": "부산광역시 동래구"
+          },
+          {
+                    "code": "26290",
+                    "filename": "apt_chart_85_26290.png",
+                    "label": "부산광역시 남구"
+          },
+          {
+                    "code": "26320",
+                    "filename": "apt_chart_85_26320.png",
+                    "label": "부산광역시 북구"
+          },
+          {
+                    "code": "26350",
+                    "filename": "apt_chart_85_26350.png",
+                    "label": "부산광역시 해운대구"
+          },
+          {
+                    "code": "26380",
+                    "filename": "apt_chart_85_26380.png",
+                    "label": "부산광역시 사하구"
+          },
+          {
+                    "code": "26410",
+                    "filename": "apt_chart_85_26410.png",
+                    "label": "부산광역시 금정구"
+          },
+          {
+                    "code": "26440",
+                    "filename": "apt_chart_85_26440.png",
+                    "label": "부산광역시 강서구"
+          },
+          {
+                    "code": "26470",
+                    "filename": "apt_chart_85_26470.png",
+                    "label": "부산광역시 연제구"
+          },
+          {
+                    "code": "26500",
+                    "filename": "apt_chart_85_26500.png",
+                    "label": "부산광역시 수영구"
+          },
+          {
+                    "code": "26530",
+                    "filename": "apt_chart_85_26530.png",
+                    "label": "부산광역시 사상구"
+          },
+          {
+                    "code": "26710",
+                    "filename": "apt_chart_85_26710.png",
+                    "label": "부산광역시 기장군"
+          },
+          {
+                    "code": "27110",
+                    "filename": "apt_chart_85_27110.png",
+                    "label": "대구광역시 중구"
+          },
+          {
+                    "code": "27140",
+                    "filename": "apt_chart_85_27140.png",
+                    "label": "대구광역시 동구"
+          },
+          {
+                    "code": "27170",
+                    "filename": "apt_chart_85_27170.png",
+                    "label": "대구광역시 서구"
+          },
+          {
+                    "code": "27200",
+                    "filename": "apt_chart_85_27200.png",
+                    "label": "대구광역시 남구"
+          },
+          {
+                    "code": "27230",
+                    "filename": "apt_chart_85_27230.png",
+                    "label": "대구광역시 북구"
+          },
+          {
+                    "code": "27260",
+                    "filename": "apt_chart_85_27260.png",
+                    "label": "대구광역시 수성구"
+          },
+          {
+                    "code": "27290",
+                    "filename": "apt_chart_85_27290.png",
+                    "label": "대구광역시 달서구"
+          },
+          {
+                    "code": "27710",
+                    "filename": "apt_chart_85_27710.png",
+                    "label": "대구광역시 달성군"
+          },
+          {
+                    "code": "27720",
+                    "filename": "apt_chart_85_27720.png",
+                    "label": "대구광역시 군위군"
+          },
+          {
+                    "code": "28110",
+                    "filename": "apt_chart_85_28110.png",
+                    "label": "인천광역시 중구"
+          },
+          {
+                    "code": "28140",
+                    "filename": "apt_chart_85_28140.png",
+                    "label": "인천광역시 동구"
+          },
+          {
+                    "code": "28177",
+                    "filename": "apt_chart_85_28177.png",
+                    "label": "인천광역시 미추홀구"
+          },
+          {
+                    "code": "28185",
+                    "filename": "apt_chart_85_28185.png",
+                    "label": "인천광역시 연수구"
+          },
+          {
+                    "code": "28200",
+                    "filename": "apt_chart_85_28200.png",
+                    "label": "인천광역시 남동구"
+          },
+          {
+                    "code": "28237",
+                    "filename": "apt_chart_85_28237.png",
+                    "label": "인천광역시 부평구"
+          },
+          {
+                    "code": "28245",
+                    "filename": "apt_chart_85_28245.png",
+                    "label": "인천광역시 계양구"
+          },
+          {
+                    "code": "28260",
+                    "filename": "apt_chart_85_28260.png",
+                    "label": "인천광역시 서구"
+          },
+          {
+                    "code": "28710",
+                    "filename": "apt_chart_85_28710.png",
+                    "label": "인천광역시 강화군"
+          },
+          {
+                    "code": "28720",
+                    "filename": "apt_chart_85_28720.png",
+                    "label": "인천광역시 옹진군"
+          },
+          {
+                    "code": "29110",
+                    "filename": "apt_chart_85_29110.png",
+                    "label": "광주광역시 동구"
+          },
+          {
+                    "code": "29140",
+                    "filename": "apt_chart_85_29140.png",
+                    "label": "광주광역시 서구"
+          },
+          {
+                    "code": "29155",
+                    "filename": "apt_chart_85_29155.png",
+                    "label": "광주광역시 남구"
+          },
+          {
+                    "code": "29170",
+                    "filename": "apt_chart_85_29170.png",
+                    "label": "광주광역시 북구"
+          },
+          {
+                    "code": "29200",
+                    "filename": "apt_chart_85_29200.png",
+                    "label": "광주광역시 광산구"
+          },
+          {
+                    "code": "30110",
+                    "filename": "apt_chart_85_30110.png",
+                    "label": "대전광역시 동구"
+          },
+          {
+                    "code": "30140",
+                    "filename": "apt_chart_85_30140.png",
+                    "label": "대전광역시 중구"
+          },
+          {
+                    "code": "30170",
+                    "filename": "apt_chart_85_30170.png",
+                    "label": "대전광역시 서구"
+          },
+          {
+                    "code": "30200",
+                    "filename": "apt_chart_85_30200.png",
+                    "label": "대전광역시 유성구"
+          },
+          {
+                    "code": "30230",
+                    "filename": "apt_chart_85_30230.png",
+                    "label": "대전광역시 대덕구"
+          },
+          {
+                    "code": "31110",
+                    "filename": "apt_chart_85_31110.png",
+                    "label": "울산광역시 중구"
+          },
+          {
+                    "code": "31140",
+                    "filename": "apt_chart_85_31140.png",
+                    "label": "울산광역시 남구"
+          },
+          {
+                    "code": "31170",
+                    "filename": "apt_chart_85_31170.png",
+                    "label": "울산광역시 동구"
+          },
+          {
+                    "code": "31200",
+                    "filename": "apt_chart_85_31200.png",
+                    "label": "울산광역시 북구"
+          },
+          {
+                    "code": "31710",
+                    "filename": "apt_chart_85_31710.png",
+                    "label": "울산광역시 울주군"
+          },
+          {
+                    "code": "36110",
+                    "filename": "apt_chart_85_36110.png",
+                    "label": "세종특별자치시"
+          },
+          {
+                    "code": "41111",
+                    "filename": "apt_chart_85_41111.png",
+                    "label": "경기도 수원시 장안구"
+          },
+          {
+                    "code": "41113",
+                    "filename": "apt_chart_85_41113.png",
+                    "label": "경기도 수원시 권선구"
+          },
+          {
+                    "code": "41115",
+                    "filename": "apt_chart_85_41115.png",
+                    "label": "경기도 수원시 팔달구"
+          },
+          {
+                    "code": "41117",
+                    "filename": "apt_chart_85_41117.png",
+                    "label": "경기도 수원시 영통구"
+          },
+          {
+                    "code": "41131",
+                    "filename": "apt_chart_85_41131.png",
+                    "label": "경기도 성남시 수정구"
+          },
+          {
+                    "code": "41133",
+                    "filename": "apt_chart_85_41133.png",
+                    "label": "경기도 성남시 중원구"
+          },
+          {
+                    "code": "41135",
+                    "filename": "apt_chart_85_41135.png",
+                    "label": "경기도 성남시 분당구"
+          },
+          {
+                    "code": "41150",
+                    "filename": "apt_chart_85_41150.png",
+                    "label": "경기도 의정부시"
+          },
+          {
+                    "code": "41171",
+                    "filename": "apt_chart_85_41171.png",
+                    "label": "경기도 안양시 만안구"
+          },
+          {
+                    "code": "41173",
+                    "filename": "apt_chart_85_41173.png",
+                    "label": "경기도 안양시 동안구"
+          },
+          {
+                    "code": "41192",
+                    "filename": "apt_chart_85_41192.png",
+                    "label": "경기도 부천시 원미구"
+          },
+          {
+                    "code": "41194",
+                    "filename": "apt_chart_85_41194.png",
+                    "label": "경기도 부천시 소사구"
+          },
+          {
+                    "code": "41196",
+                    "filename": "apt_chart_85_41196.png",
+                    "label": "경기도 부천시 오정구"
+          },
+          {
+                    "code": "41210",
+                    "filename": "apt_chart_85_41210.png",
+                    "label": "경기도 광명시"
+          },
+          {
+                    "code": "41220",
+                    "filename": "apt_chart_85_41220.png",
+                    "label": "경기도 평택시"
+          },
+          {
+                    "code": "41250",
+                    "filename": "apt_chart_85_41250.png",
+                    "label": "경기도 동두천시"
+          },
+          {
+                    "code": "41271",
+                    "filename": "apt_chart_85_41271.png",
+                    "label": "경기도 안산시 상록구"
+          },
+          {
+                    "code": "41273",
+                    "filename": "apt_chart_85_41273.png",
+                    "label": "경기도 안산시 단원구"
+          },
+          {
+                    "code": "41281",
+                    "filename": "apt_chart_85_41281.png",
+                    "label": "경기도 고양시 덕양구"
+          },
+          {
+                    "code": "41285",
+                    "filename": "apt_chart_85_41285.png",
+                    "label": "경기도 고양시 일산동구"
+          },
+          {
+                    "code": "41287",
+                    "filename": "apt_chart_85_41287.png",
+                    "label": "경기도 고양시 일산서구"
+          },
+          {
+                    "code": "41290",
+                    "filename": "apt_chart_85_41290.png",
+                    "label": "경기도 과천시"
+          },
+          {
+                    "code": "41310",
+                    "filename": "apt_chart_85_41310.png",
+                    "label": "경기도 구리시"
+          },
+          {
+                    "code": "41360",
+                    "filename": "apt_chart_85_41360.png",
+                    "label": "경기도 남양주시"
+          },
+          {
+                    "code": "41370",
+                    "filename": "apt_chart_85_41370.png",
+                    "label": "경기도 오산시"
+          },
+          {
+                    "code": "41390",
+                    "filename": "apt_chart_85_41390.png",
+                    "label": "경기도 시흥시"
+          },
+          {
+                    "code": "41410",
+                    "filename": "apt_chart_85_41410.png",
+                    "label": "경기도 군포시"
+          },
+          {
+                    "code": "41430",
+                    "filename": "apt_chart_85_41430.png",
+                    "label": "경기도 의왕시"
+          },
+          {
+                    "code": "41450",
+                    "filename": "apt_chart_85_41450.png",
+                    "label": "경기도 하남시"
+          },
+          {
+                    "code": "41461",
+                    "filename": "apt_chart_85_41461.png",
+                    "label": "경기도 용인시 처인구"
+          },
+          {
+                    "code": "41463",
+                    "filename": "apt_chart_85_41463.png",
+                    "label": "경기도 용인시 기흥구"
+          },
+          {
+                    "code": "41465",
+                    "filename": "apt_chart_85_41465.png",
+                    "label": "경기도 용인시 수지구"
+          },
+          {
+                    "code": "41480",
+                    "filename": "apt_chart_85_41480.png",
+                    "label": "경기도 파주시"
+          },
+          {
+                    "code": "41500",
+                    "filename": "apt_chart_85_41500.png",
+                    "label": "경기도 이천시"
+          },
+          {
+                    "code": "41550",
+                    "filename": "apt_chart_85_41550.png",
+                    "label": "경기도 안성시"
+          },
+          {
+                    "code": "41570",
+                    "filename": "apt_chart_85_41570.png",
+                    "label": "경기도 김포시"
+          },
+          {
+                    "code": "41590",
+                    "filename": "apt_chart_85_41590.png",
+                    "label": "경기도 화성시"
+          },
+          {
+                    "code": "41610",
+                    "filename": "apt_chart_85_41610.png",
+                    "label": "경기도 광주시"
+          },
+          {
+                    "code": "41630",
+                    "filename": "apt_chart_85_41630.png",
+                    "label": "경기도 양주시"
+          },
+          {
+                    "code": "41650",
+                    "filename": "apt_chart_85_41650.png",
+                    "label": "경기도 포천시"
+          },
+          {
+                    "code": "41670",
+                    "filename": "apt_chart_85_41670.png",
+                    "label": "경기도 여주시"
+          },
+          {
+                    "code": "41800",
+                    "filename": "apt_chart_85_41800.png",
+                    "label": "경기도 연천군"
+          },
+          {
+                    "code": "41820",
+                    "filename": "apt_chart_85_41820.png",
+                    "label": "경기도 가평군"
+          },
+          {
+                    "code": "41830",
+                    "filename": "apt_chart_85_41830.png",
+                    "label": "경기도 양평군"
+          },
+          {
+                    "code": "43111",
+                    "filename": "apt_chart_85_43111.png",
+                    "label": "충천북도 청주시 상당구"
+          },
+          {
+                    "code": "43112",
+                    "filename": "apt_chart_85_43112.png",
+                    "label": "충천북도 청주시 서원구"
+          },
+          {
+                    "code": "43113",
+                    "filename": "apt_chart_85_43113.png",
+                    "label": "충천북도 청주시 흥덕구"
+          },
+          {
+                    "code": "43114",
+                    "filename": "apt_chart_85_43114.png",
+                    "label": "충천북도 청주시 청원구"
+          },
+          {
+                    "code": "43130",
+                    "filename": "apt_chart_85_43130.png",
+                    "label": "충천북도 충주시"
+          },
+          {
+                    "code": "43150",
+                    "filename": "apt_chart_85_43150.png",
+                    "label": "충천북도 제천시"
+          },
+          {
+                    "code": "43720",
+                    "filename": "apt_chart_85_43720.png",
+                    "label": "충천북도 보은군"
+          },
+          {
+                    "code": "43730",
+                    "filename": "apt_chart_85_43730.png",
+                    "label": "충천북도 옥천군"
+          },
+          {
+                    "code": "43740",
+                    "filename": "apt_chart_85_43740.png",
+                    "label": "충천북도 영동군"
+          },
+          {
+                    "code": "43745",
+                    "filename": "apt_chart_85_43745.png",
+                    "label": "충천북도 증평군"
+          },
+          {
+                    "code": "43750",
+                    "filename": "apt_chart_85_43750.png",
+                    "label": "충천북도 진천군"
+          },
+          {
+                    "code": "43760",
+                    "filename": "apt_chart_85_43760.png",
+                    "label": "충천북도 괴산군"
+          },
+          {
+                    "code": "43770",
+                    "filename": "apt_chart_85_43770.png",
+                    "label": "충천북도 음성군"
+          },
+          {
+                    "code": "43800",
+                    "filename": "apt_chart_85_43800.png",
+                    "label": "충천북도 단양군"
+          },
+          {
+                    "code": "44131",
+                    "filename": "apt_chart_85_44131.png",
+                    "label": "충청남도 천안시 동남구"
+          },
+          {
+                    "code": "44133",
+                    "filename": "apt_chart_85_44133.png",
+                    "label": "충청남도 천안시 서북구"
+          },
+          {
+                    "code": "44150",
+                    "filename": "apt_chart_85_44150.png",
+                    "label": "충청남도 공주시"
+          },
+          {
+                    "code": "44180",
+                    "filename": "apt_chart_85_44180.png",
+                    "label": "충청남도 보령시"
+          },
+          {
+                    "code": "44200",
+                    "filename": "apt_chart_85_44200.png",
+                    "label": "충청남도 아산시"
+          },
+          {
+                    "code": "44210",
+                    "filename": "apt_chart_85_44210.png",
+                    "label": "충청남도 서산시"
+          },
+          {
+                    "code": "44230",
+                    "filename": "apt_chart_85_44230.png",
+                    "label": "충청남도 논산시"
+          },
+          {
+                    "code": "44250",
+                    "filename": "apt_chart_85_44250.png",
+                    "label": "충청남도 계룡시"
+          },
+          {
+                    "code": "44270",
+                    "filename": "apt_chart_85_44270.png",
+                    "label": "충청남도 당진시"
+          },
+          {
+                    "code": "44710",
+                    "filename": "apt_chart_85_44710.png",
+                    "label": "충청남도 금산군"
+          },
+          {
+                    "code": "44760",
+                    "filename": "apt_chart_85_44760.png",
+                    "label": "충청남도 부여군"
+          },
+          {
+                    "code": "44770",
+                    "filename": "apt_chart_85_44770.png",
+                    "label": "충청남도 서천군"
+          },
+          {
+                    "code": "44790",
+                    "filename": "apt_chart_85_44790.png",
+                    "label": "충청남도 청양군"
+          },
+          {
+                    "code": "44800",
+                    "filename": "apt_chart_85_44800.png",
+                    "label": "충청남도 홍성군"
+          },
+          {
+                    "code": "44810",
+                    "filename": "apt_chart_85_44810.png",
+                    "label": "충청남도 예산군"
+          },
+          {
+                    "code": "44825",
+                    "filename": "apt_chart_85_44825.png",
+                    "label": "충청남도 태안군"
+          },
+          {
+                    "code": "46110",
+                    "filename": "apt_chart_85_46110.png",
+                    "label": "전라남도 목포시"
+          },
+          {
+                    "code": "46130",
+                    "filename": "apt_chart_85_46130.png",
+                    "label": "전라남도 여수시"
+          },
+          {
+                    "code": "46150",
+                    "filename": "apt_chart_85_46150.png",
+                    "label": "전라남도 순천시"
+          },
+          {
+                    "code": "46170",
+                    "filename": "apt_chart_85_46170.png",
+                    "label": "전라남도 나주시"
+          },
+          {
+                    "code": "46230",
+                    "filename": "apt_chart_85_46230.png",
+                    "label": "전라남도 광양시"
+          },
+          {
+                    "code": "46710",
+                    "filename": "apt_chart_85_46710.png",
+                    "label": "전라남도 담양군"
+          },
+          {
+                    "code": "46720",
+                    "filename": "apt_chart_85_46720.png",
+                    "label": "전라남도 곡성군"
+          },
+          {
+                    "code": "46730",
+                    "filename": "apt_chart_85_46730.png",
+                    "label": "전라남도 구례군"
+          },
+          {
+                    "code": "46770",
+                    "filename": "apt_chart_85_46770.png",
+                    "label": "전라남도 고흥군"
+          },
+          {
+                    "code": "46780",
+                    "filename": "apt_chart_85_46780.png",
+                    "label": "전라남도 보성군"
+          },
+          {
+                    "code": "46790",
+                    "filename": "apt_chart_85_46790.png",
+                    "label": "전라남도 화순군"
+          },
+          {
+                    "code": "46800",
+                    "filename": "apt_chart_85_46800.png",
+                    "label": "전라남도 장흥군"
+          },
+          {
+                    "code": "46810",
+                    "filename": "apt_chart_85_46810.png",
+                    "label": "전라남도 강진군"
+          },
+          {
+                    "code": "46820",
+                    "filename": "apt_chart_85_46820.png",
+                    "label": "전라남도 해남군"
+          },
+          {
+                    "code": "46830",
+                    "filename": "apt_chart_85_46830.png",
+                    "label": "전라남도 영암군"
+          },
+          {
+                    "code": "46840",
+                    "filename": "apt_chart_85_46840.png",
+                    "label": "전라남도 무안군"
+          },
+          {
+                    "code": "46860",
+                    "filename": "apt_chart_85_46860.png",
+                    "label": "전라남도 함평군"
+          },
+          {
+                    "code": "46870",
+                    "filename": "apt_chart_85_46870.png",
+                    "label": "전라남도 영광군"
+          },
+          {
+                    "code": "46880",
+                    "filename": "apt_chart_85_46880.png",
+                    "label": "전라남도 장성군"
+          },
+          {
+                    "code": "46890",
+                    "filename": "apt_chart_85_46890.png",
+                    "label": "전라남도 완도군"
+          },
+          {
+                    "code": "46900",
+                    "filename": "apt_chart_85_46900.png",
+                    "label": "전라남도 진도군"
+          },
+          {
+                    "code": "46910",
+                    "filename": "apt_chart_85_46910.png",
+                    "label": "전라남도 신안군"
+          },
+          {
+                    "code": "47111",
+                    "filename": "apt_chart_85_47111.png",
+                    "label": "경상북도 포항시 남구"
+          },
+          {
+                    "code": "47113",
+                    "filename": "apt_chart_85_47113.png",
+                    "label": "경상북도 포항시 북구"
+          },
+          {
+                    "code": "47130",
+                    "filename": "apt_chart_85_47130.png",
+                    "label": "경상북도 경주시"
+          },
+          {
+                    "code": "47150",
+                    "filename": "apt_chart_85_47150.png",
+                    "label": "경상북도 김천시"
+          },
+          {
+                    "code": "47170",
+                    "filename": "apt_chart_85_47170.png",
+                    "label": "경상북도 안동시"
+          },
+          {
+                    "code": "47190",
+                    "filename": "apt_chart_85_47190.png",
+                    "label": "경상북도 구미시"
+          },
+          {
+                    "code": "47210",
+                    "filename": "apt_chart_85_47210.png",
+                    "label": "경상북도 영주시"
+          },
+          {
+                    "code": "47230",
+                    "filename": "apt_chart_85_47230.png",
+                    "label": "경상북도 영천시"
+          },
+          {
+                    "code": "47250",
+                    "filename": "apt_chart_85_47250.png",
+                    "label": "경상북도 상주시"
+          },
+          {
+                    "code": "47280",
+                    "filename": "apt_chart_85_47280.png",
+                    "label": "경상북도 문경시"
+          },
+          {
+                    "code": "47290",
+                    "filename": "apt_chart_85_47290.png",
+                    "label": "경상북도 경산시"
+          },
+          {
+                    "code": "47730",
+                    "filename": "apt_chart_85_47730.png",
+                    "label": "경상북도 의성군"
+          },
+          {
+                    "code": "47750",
+                    "filename": "apt_chart_85_47750.png",
+                    "label": "경상북도 청송군"
+          },
+          {
+                    "code": "47760",
+                    "filename": "apt_chart_85_47760.png",
+                    "label": "경상북도 영양군"
+          },
+          {
+                    "code": "47770",
+                    "filename": "apt_chart_85_47770.png",
+                    "label": "경상북도 영덕군"
+          },
+          {
+                    "code": "47820",
+                    "filename": "apt_chart_85_47820.png",
+                    "label": "경상북도 청도군"
+          },
+          {
+                    "code": "47830",
+                    "filename": "apt_chart_85_47830.png",
+                    "label": "경상북도 고령군"
+          },
+          {
+                    "code": "47840",
+                    "filename": "apt_chart_85_47840.png",
+                    "label": "경상북도 성주군"
+          },
+          {
+                    "code": "47850",
+                    "filename": "apt_chart_85_47850.png",
+                    "label": "경상북도 칠곡군"
+          },
+          {
+                    "code": "47900",
+                    "filename": "apt_chart_85_47900.png",
+                    "label": "경상북도 예천군"
+          },
+          {
+                    "code": "47920",
+                    "filename": "apt_chart_85_47920.png",
+                    "label": "경상북도 봉화군"
+          },
+          {
+                    "code": "47930",
+                    "filename": "apt_chart_85_47930.png",
+                    "label": "경상북도 울진군"
+          },
+          {
+                    "code": "47940",
+                    "filename": "apt_chart_85_47940.png",
+                    "label": "경상북도 울릉군"
+          },
+          {
+                    "code": "48121",
+                    "filename": "apt_chart_85_48121.png",
+                    "label": "경상남도 창원시 의창구"
+          },
+          {
+                    "code": "48123",
+                    "filename": "apt_chart_85_48123.png",
+                    "label": "경상남도 창원시 성산구"
+          },
+          {
+                    "code": "48125",
+                    "filename": "apt_chart_85_48125.png",
+                    "label": "경상남도 창원시 마산합포구"
+          },
+          {
+                    "code": "48127",
+                    "filename": "apt_chart_85_48127.png",
+                    "label": "경상남도 창원시 마산회원구"
+          },
+          {
+                    "code": "48129",
+                    "filename": "apt_chart_85_48129.png",
+                    "label": "경상남도 진해구"
+          },
+          {
+                    "code": "48170",
+                    "filename": "apt_chart_85_48170.png",
+                    "label": "경상남도 진주시"
+          },
+          {
+                    "code": "48220",
+                    "filename": "apt_chart_85_48220.png",
+                    "label": "경상남도 통영시"
+          },
+          {
+                    "code": "48240",
+                    "filename": "apt_chart_85_48240.png",
+                    "label": "경상남도 사천시"
+          },
+          {
+                    "code": "48250",
+                    "filename": "apt_chart_85_48250.png",
+                    "label": "경상남도 김해시"
+          },
+          {
+                    "code": "48270",
+                    "filename": "apt_chart_85_48270.png",
+                    "label": "경상남도 밀양시"
+          },
+          {
+                    "code": "48310",
+                    "filename": "apt_chart_85_48310.png",
+                    "label": "경상남도 거제시"
+          },
+          {
+                    "code": "48330",
+                    "filename": "apt_chart_85_48330.png",
+                    "label": "경상남도 양산시"
+          },
+          {
+                    "code": "48720",
+                    "filename": "apt_chart_85_48720.png",
+                    "label": "경상남도 의령군"
+          },
+          {
+                    "code": "48730",
+                    "filename": "apt_chart_85_48730.png",
+                    "label": "경상남도 함안군"
+          },
+          {
+                    "code": "48740",
+                    "filename": "apt_chart_85_48740.png",
+                    "label": "경상남도 창녕군"
+          },
+          {
+                    "code": "48820",
+                    "filename": "apt_chart_85_48820.png",
+                    "label": "경상남도 고성군"
+          },
+          {
+                    "code": "48840",
+                    "filename": "apt_chart_85_48840.png",
+                    "label": "경상남도 남해군"
+          },
+          {
+                    "code": "48850",
+                    "filename": "apt_chart_85_48850.png",
+                    "label": "경상남도 하동군"
+          },
+          {
+                    "code": "48860",
+                    "filename": "apt_chart_85_48860.png",
+                    "label": "경상남도 산청군"
+          },
+          {
+                    "code": "48870",
+                    "filename": "apt_chart_85_48870.png",
+                    "label": "경상남도 함양군"
+          },
+          {
+                    "code": "48880",
+                    "filename": "apt_chart_85_48880.png",
+                    "label": "경상남도 거창군"
+          },
+          {
+                    "code": "48890",
+                    "filename": "apt_chart_85_48890.png",
+                    "label": "경상남도 합천군"
+          },
+          {
+                    "code": "50110",
+                    "filename": "apt_chart_85_50110.png",
+                    "label": "제주특별자치도 제주시"
+          },
+          {
+                    "code": "50130",
+                    "filename": "apt_chart_85_50130.png",
+                    "label": "제주특별자치도 서귀포시"
+          },
+          {
+                    "code": "51110",
+                    "filename": "apt_chart_85_51110.png",
+                    "label": "강원특별자치도 춘천시"
+          },
+          {
+                    "code": "51130",
+                    "filename": "apt_chart_85_51130.png",
+                    "label": "강원특별자치도 원주시"
+          },
+          {
+                    "code": "51150",
+                    "filename": "apt_chart_85_51150.png",
+                    "label": "강원특별자치도 강릉시"
+          },
+          {
+                    "code": "51170",
+                    "filename": "apt_chart_85_51170.png",
+                    "label": "강원특별자치도 동해시"
+          },
+          {
+                    "code": "51190",
+                    "filename": "apt_chart_85_51190.png",
+                    "label": "강원특별자치도 태백시"
+          },
+          {
+                    "code": "51210",
+                    "filename": "apt_chart_85_51210.png",
+                    "label": "강원특별자치도 속초시"
+          },
+          {
+                    "code": "51230",
+                    "filename": "apt_chart_85_51230.png",
+                    "label": "강원특별자치도 삼척시"
+          },
+          {
+                    "code": "51720",
+                    "filename": "apt_chart_85_51720.png",
+                    "label": "강원특별자치도 홍천군"
+          },
+          {
+                    "code": "51730",
+                    "filename": "apt_chart_85_51730.png",
+                    "label": "강원특별자치도 횡성군"
+          },
+          {
+                    "code": "51750",
+                    "filename": "apt_chart_85_51750.png",
+                    "label": "강원특별자치도 영월군"
+          },
+          {
+                    "code": "51760",
+                    "filename": "apt_chart_85_51760.png",
+                    "label": "강원특별자치도 평창군"
+          },
+          {
+                    "code": "51770",
+                    "filename": "apt_chart_85_51770.png",
+                    "label": "강원특별자치도 정선군"
+          },
+          {
+                    "code": "51780",
+                    "filename": "apt_chart_85_51780.png",
+                    "label": "강원특별자치도 철원군"
+          },
+          {
+                    "code": "51790",
+                    "filename": "apt_chart_85_51790.png",
+                    "label": "강원특별자치도 화천군"
+          },
+          {
+                    "code": "51800",
+                    "filename": "apt_chart_85_51800.png",
+                    "label": "강원특별자치도 양구군"
+          },
+          {
+                    "code": "51810",
+                    "filename": "apt_chart_85_51810.png",
+                    "label": "강원특별자치도 인제군"
+          },
+          {
+                    "code": "51820",
+                    "filename": "apt_chart_85_51820.png",
+                    "label": "강원특별자치도 고성군"
+          },
+          {
+                    "code": "51830",
+                    "filename": "apt_chart_85_51830.png",
+                    "label": "강원특별자치도 양양군"
+          },
+          {
+                    "code": "52111",
+                    "filename": "apt_chart_85_52111.png",
+                    "label": "전북특별자치도 전주시 완산구"
+          },
+          {
+                    "code": "52113",
+                    "filename": "apt_chart_85_52113.png",
+                    "label": "전북특별자치도 전주시 덕진구"
+          },
+          {
+                    "code": "52130",
+                    "filename": "apt_chart_85_52130.png",
+                    "label": "전북특별자치도 군산시"
+          },
+          {
+                    "code": "52140",
+                    "filename": "apt_chart_85_52140.png",
+                    "label": "전북특별자치도 익산시"
+          },
+          {
+                    "code": "52180",
+                    "filename": "apt_chart_85_52180.png",
+                    "label": "전북특별자치도 정읍시"
+          },
+          {
+                    "code": "52190",
+                    "filename": "apt_chart_85_52190.png",
+                    "label": "전북특별자치도 남원시"
+          },
+          {
+                    "code": "52210",
+                    "filename": "apt_chart_85_52210.png",
+                    "label": "전북특별자치도 김제시"
+          },
+          {
+                    "code": "52710",
+                    "filename": "apt_chart_85_52710.png",
+                    "label": "전북특별자치도 완주군"
+          },
+          {
+                    "code": "52720",
+                    "filename": "apt_chart_85_52720.png",
+                    "label": "전북특별자치도 진안군"
+          },
+          {
+                    "code": "52730",
+                    "filename": "apt_chart_85_52730.png",
+                    "label": "전북특별자치도 무주군"
+          },
+          {
+                    "code": "52740",
+                    "filename": "apt_chart_85_52740.png",
+                    "label": "전북특별자치도 장수군"
+          },
+          {
+                    "code": "52750",
+                    "filename": "apt_chart_85_52750.png",
+                    "label": "전북특별자치도 임실군"
+          },
+          {
+                    "code": "52770",
+                    "filename": "apt_chart_85_52770.png",
+                    "label": "전북특별자치도 순창군"
+          },
+          {
+                    "code": "52790",
+                    "filename": "apt_chart_85_52790.png",
+                    "label": "전북특별자치도 고창군"
+          },
+          {
+                    "code": "52800",
+                    "filename": "apt_chart_85_52800.png",
+                    "label": "전북특별자치도 부안군"
+          }
+];
 
+        const regionSelect = document.getElementById("regionSelect");
+        const pageTitle = document.getElementById("pageTitle");
+        const chartStage = document.getElementById("chartStage");
+        const reportStage = document.getElementById("reportStage");
+        const statusText = document.getElementById("statusText");
+        const chartLabel = document.getElementById("chartLabel");
+        const kpiRegion = document.getElementById("kpiRegion");
+        const kpiCode = document.getElementById("kpiCode");
+        const kpiTrend = document.getElementById("kpiTrend");
+        const dataRange = document.getElementById("dataRange");
+        const refreshButton = document.getElementById("refreshButton");
+        const summaryText = document.getElementById("summaryText");
+        const provinceFilter = document.getElementById("provinceFilter");
+        const selectedRegionText = document.getElementById("selectedRegionText");
+        const mapStage = document.getElementById("mapStage");
+        const mapLabel = document.getElementById("mapLabel");
+        const mapQueryText = document.getElementById("mapQueryText");
+        const openMap = document.getElementById("openMap");
 
-        select.addEventListener("change", () => {
-            const filename = select.value;
-            const labelText = select.options[select.selectedIndex].text;
+        let regions = [];
+        let activeFilter = "all";
 
-            if (!filename) {
-                // 선택 초기화 시
-                img.style.display = "none";
-                img.src = "";
-                status.textContent = "";
-                reportFrame.style.display = "none";
-                reportFrame.src = "";
-                scrollIndicator.style.display = "none";
+        function getCodeFromFilename(filename) {
+            const match = filename.match(/apt_chart_85_(\d+)\.png$/);
+            return match ? match[1] : "";
+        }
+
+        function getProvince(label) {
+            return label.split(/\s+/)[0] || "";
+        }
+
+        function getPreviousMonthLabel(date = new Date()) {
+            const previousMonth = new Date(date.getFullYear(), date.getMonth() - 1, 1);
+            const year = previousMonth.getFullYear();
+            const month = String(previousMonth.getMonth() + 1).padStart(2, "0");
+            return `${year}.${month}`;
+        }
+
+        function renderProvinceFilter() {
+            const provinces = [...new Set(regions.map((region) => getProvince(region.label)).filter(Boolean))];
+            provinceFilter.innerHTML = '<option value="all">전국</option>';
+            provinces.forEach((province) => {
+                provinceFilter.append(new Option(province, province));
+            });
+        }
+
+        function renderOptions() {
+            const filtered = regions.filter((region) => {
+                return activeFilter === "all" || getProvince(region.label) === activeFilter;
+            });
+
+            regionSelect.innerHTML = "";
+            if (!filtered.length) {
+                const option = new Option("선택 가능한 지역이 없습니다", "");
+                regionSelect.append(option);
                 return;
             }
 
-            // 이미지 경로 (기존과 동일)
-            const imgPath = "apt_trade_chart_85/" + filename;
+            filtered.forEach((region) => {
+                const option = new Option(region.label, region.filename);
+                option.dataset.code = region.code;
+                regionSelect.append(option);
+            });
+        }
 
-            status.textContent = "이미지 불러오는 중...";
-            img.style.display = "none"; // 로딩 중에는 잠깐 숨김
+        function renderMap(regionLabel) {
+            const query = `대한민국 ${regionLabel}`;
+            const encodedQuery = encodeURIComponent(query);
+            const embedUrl = `https://www.google.com/maps?q=${encodedQuery}&output=embed`;
+            const openUrl = `https://www.google.com/maps/search/?api=1&query=${encodedQuery}`;
 
-            img.onload = () => {
-                img.style.display = "block";
-                status.textContent = labelText + " 이미지가 표시되었습니다.";
+            mapLabel.textContent = regionLabel;
+            mapQueryText.textContent = query;
+            openMap.href = openUrl;
+            openMap.removeAttribute("aria-disabled");
+            mapStage.innerHTML = "";
+
+            const iframe = document.createElement("iframe");
+            iframe.className = "map-frame";
+            iframe.title = `${regionLabel} 위치 지도`;
+            iframe.loading = "lazy";
+            iframe.referrerPolicy = "no-referrer-when-downgrade";
+            iframe.src = embedUrl;
+            mapStage.append(iframe);
+        }
+
+        function syncMapHeightToChart() {
+            const chartHeight = Math.round(chartStage.getBoundingClientRect().height);
+            if (chartHeight > 0) {
+                mapStage.style.height = `${chartHeight}px`;
+            }
+        }
+
+        function loadRegions() {
+            regions = [...INDEX_REGIONS];
+            renderProvinceFilter();
+            renderOptions();
+            statusText.textContent = `251개 지역 준비 완료`;
+        }
+
+        function setSelectedRegion(filename) {
+            const region = regions.find((item) => item.filename === filename);
+            if (!region) {
+                return;
+            }
+
+            const chartPath = `${CHART_DIR}${region.filename}`;
+            const reportPath = `${REPORT_DIR}apt_report_85_${region.code}.html`;
+
+            pageTitle.textContent = region.label;
+            selectedRegionText.textContent = region.label;
+            renderMap(region.label);
+            chartLabel.textContent = "전체 기간";
+            kpiRegion.textContent = region.label.replace(/.*\s/, "");
+            kpiCode.textContent = `행정 코드 ${region.code}`;
+            kpiTrend.textContent = "분석";
+            statusText.textContent = `${region.label} 차트 표시 중`;
+            summaryText.textContent = `${region.label}의 장기 가격 흐름과 최근 이동평균 변화를 함께 확인합니다.`;
+
+            chartStage.innerHTML = "";
+            const image = document.createElement("img");
+            image.className = "chart-image";
+            image.src = chartPath;
+            image.alt = `${region.label} 아파트 가격 차트`;
+            image.onload = () => {
+                statusText.textContent = `${region.label} 분석 준비 완료`;
+                // syncMapHeightToChart();
             };
-
-            img.onerror = () => {
-                img.style.display = "none";
-                status.textContent = "이미지를 불러오지 못했습니다. 파일 경로 또는 이름을 확인해주세요.";
+            image.onerror = () => {
+                chartStage.innerHTML = '<div class="empty-state"><div><strong>차트를 불러오지 못했습니다</strong><span>파일 경로 또는 이름을 확인하세요.</span></div></div>';
+                statusText.textContent = "차트 로딩 실패";
+                // syncMapHeightToChart();
             };
+            chartStage.append(image);
+            // requestAnimationFrame(syncMapHeightToChart);
 
-            img.src = imgPath;
-            img.alt = labelText + " 이미지";
+            reportStage.className = "";
+            reportStage.innerHTML = "";
+            const iframe = document.createElement("iframe");
+            iframe.className = "report-frame";
+            iframe.title = `${region.label} 아파트 리포트`;
+            iframe.src = reportPath;
+            reportStage.append(iframe);
 
-            const match = filename.match(/apt_chart_85_(\d+)\.png$/);
-            if (match) {
-                const dongCode = match[1];
-                const reportPath = "apt_trade_report_85/apt_report_85_" + dongCode + ".html";
+        }
 
-                reportFrame.style.display = "block";
-                reportFrame.src = reportPath;
-                scrollIndicator.style.display = "block";
-
-            } else {
-                // 파일명 패턴이 다를 경우 리포트 숨김
-                reportFrame.style.display = "none";
-                reportFrame.src = "";
+        regionSelect.addEventListener("change", () => {
+            if (regionSelect.value) {
+                setSelectedRegion(regionSelect.value);
             }
         });
+
+        provinceFilter.addEventListener("change", () => {
+            activeFilter = provinceFilter.value;
+            renderOptions();
+        });
+
+        refreshButton.addEventListener("click", () => {
+            const selected = regionSelect.value;
+            if (selected) {
+                setSelectedRegion(selected);
+            }
+        });
+
+        // window.addEventListener("resize", syncMapHeightToChart);
+
+        document.getElementById("year").textContent = new Date().getFullYear();
+        dataRange.textContent = `2006.01-${getPreviousMonthLabel()}`;
+        loadRegions();
     </script>
-
-    
-    <footer id="site-footer">
-        <br>
-        <br>
-        <br>
-        <br>
-        Copyright © APT. Swing 2025-<span id="year"></span>.<br>
-        Data source: Ministry of Land, Infrastructure and Transport (MOLIT).
-    </footer>
-
-    <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-    </script>
-
-
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
