@@ -142,6 +142,11 @@
             font-weight: 800;
         }
 
+        .sidebar-filters,
+        .sidebar-cards {
+            min-width: 0;
+        }
+
         .select {
             width: 100%;
             min-height: 300px;
@@ -540,8 +545,52 @@
             .sidebar {
                 position: relative;
                 height: auto;
+                padding: 18px;
                 border-right: 0;
                 border-bottom: 1px solid var(--line);
+            }
+
+            .brand {
+                margin-bottom: 16px;
+            }
+
+            .sidebar-filters {
+                display: grid;
+                grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+                gap: 12px;
+            }
+
+            .filter-field {
+                min-width: 0;
+            }
+
+            .section-label {
+                margin: 0 0 7px;
+            }
+
+            .province-select,
+            .select {
+                height: 44px;
+                min-height: 44px;
+                margin: 0;
+                padding: 0 12px;
+            }
+
+            .sidebar-cards {
+                display: grid;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 12px;
+                margin-top: 12px;
+            }
+
+            .side-card {
+                min-width: 0;
+                margin-top: 0;
+                padding: 12px 14px;
+            }
+
+            .side-card strong {
+                margin-bottom: 4px;
             }
 
             .dashboard-grid {
@@ -550,6 +599,28 @@
         }
 
         @media (max-width: 760px) {
+            .sidebar {
+                padding: 14px;
+            }
+
+            .brand {
+                gap: 10px;
+                margin-bottom: 14px;
+            }
+
+            .brand-mark {
+                width: 36px;
+                height: 36px;
+            }
+
+            .brand-title {
+                font-size: 17px;
+            }
+
+            .brand-subtitle {
+                font-size: 11px;
+            }
+
             .main {
                 padding: 18px 14px 28px;
             }
@@ -563,9 +634,35 @@
                 justify-content: flex-start;
             }
 
-            .kpi-grid,
+            .kpi-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 10px;
+            }
+
             .insight-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .kpi {
+                min-height: 104px;
+                padding: 14px;
+            }
+
+            .kpi strong {
+                font-size: 17px;
+            }
+
+            .side-card {
+                padding: 10px;
+            }
+
+            .side-card strong,
+            .side-card p {
+                font-size: 11px;
+            }
+
+            .side-card p {
+                line-height: 1.4;
             }
 
             .map-board {
@@ -594,13 +691,17 @@
                 </div>
             </div>
 
-            <label class="section-label" for="provinceFilter">시도 필터</label>
-            <select id="provinceFilter" class="province-select">
-                <option value="all">전국</option>
-            </select>
+            <div class="sidebar-filters">
+                <div class="filter-field">
+                    <label class="section-label" for="provinceFilter">시도 필터</label>
+                    <select id="provinceFilter" class="province-select">
+                        <option value="all">전국</option>
+                    </select>
+                </div>
 
-            <label class="section-label" for="regionSelect">분석 지역</label>
-            <select id="regionSelect" class="select" size="18">
+                <div class="filter-field">
+                    <label class="section-label" for="regionSelect">분석 지역</label>
+                    <select id="regionSelect" class="select" size="18">
                 <option value="apt_chart_85_11110.png" data-code="11110">서울특별시 종로구</option>
                 <option value="apt_chart_85_11140.png" data-code="11140">서울특별시 중구</option>
                 <option value="apt_chart_85_11170.png" data-code="11170">서울특별시 용산구</option>
@@ -853,21 +954,25 @@
                 <option value="apt_chart_85_52770.png" data-code="52770">전북특별자치도 순창군</option>
                 <option value="apt_chart_85_52790.png" data-code="52790">전북특별자치도 고창군</option>
                 <option value="apt_chart_85_52800.png" data-code="52800">전북특별자치도 부안군</option>
-            </select>
-
-            <div class="side-card">
-                <strong>선택된 지역</strong>
-                <p id="selectedRegionText">아직 선택된 지역이 없습니다.</p>
+                    </select>
+                </div>
             </div>
 
-            <div class="side-card">
-                <strong>제공 데이터</strong>
-                <p>전국 시군구 단위 아파트 실거래가 흐름을 2006.01부터 직전월까지 차트와 리포트로 제공합니다.</p>
-            </div>
+            <div class="sidebar-cards">
+                <div class="side-card">
+                    <strong>선택 지역</strong>
+                    <p id="selectedRegionText">지역을 선택하세요</p>
+                </div>
 
-            <div class="side-card">
-                <strong>이용 방법</strong>
-                <p>지역을 선택하면 실거래가 차트, 위치 지도, 분석 리포트를 한 화면에서 확인할 수 있습니다.</p>
+                <div class="side-card">
+                    <strong>데이터 범위</strong>
+                    <p>2006.01-직전월</p>
+                </div>
+
+                <div class="side-card">
+                    <strong>제공 구성</strong>
+                    <p>차트 · 지도 · 리포트</p>
+                </div>
             </div>
         </aside>
 
@@ -2271,6 +2376,11 @@
 
         let regions = [];
         let activeFilter = "all";
+        const compactRegionQuery = window.matchMedia("(max-width: 1180px)");
+
+        function syncRegionPickerMode(event) {
+            regionSelect.size = event.matches ? 1 : 18;
+        }
 
         function getCodeFromFilename(filename) {
             const match = filename.match(/apt_chart_85_(\d+)\.png$/);
@@ -2415,6 +2525,13 @@
         });
 
         // window.addEventListener("resize", syncMapHeightToChart);
+
+        syncRegionPickerMode(compactRegionQuery);
+        if (typeof compactRegionQuery.addEventListener === "function") {
+            compactRegionQuery.addEventListener("change", syncRegionPickerMode);
+        } else {
+            compactRegionQuery.addListener(syncRegionPickerMode);
+        }
 
         document.getElementById("year").textContent = new Date().getFullYear();
         dataRange.textContent = `2006.01-${getPreviousMonthLabel()}`;
