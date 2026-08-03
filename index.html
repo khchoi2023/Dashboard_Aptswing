@@ -495,6 +495,19 @@
             background: #ffffff;
         }
 
+        .scroll-cue {
+            display: flex;
+            justify-content: center;
+            padding: 12px 0 4px;
+            background: #ffffff;
+        }
+
+        .scroll-cue img {
+            width: 42px;
+            height: auto;
+            opacity: 0.72;
+        }
+
         .report-index-link {
             display: flex;
             align-items: center;
@@ -1072,6 +1085,9 @@
                         <h2 class="panel-title">지역 분석 리포트</h2>
                     </div>
                     <div id="reportStage" class="report-empty">지역을 선택하면 리포트가 표시됩니다.</div>
+                    <div class="scroll-cue" aria-hidden="true">
+                        <img src="scroll.gif" alt="">
+                    </div>
                 </article>
             </section>
 
@@ -2376,10 +2392,15 @@
 
         let regions = [];
         let activeFilter = "all";
+        let selectedRegionValue = "";
         const compactRegionQuery = window.matchMedia("(max-width: 1180px)");
 
         function syncRegionPickerMode(event) {
+            const selectedValue = selectedRegionValue;
             regionSelect.size = event.matches ? 1 : 18;
+            if (regions.length) {
+                renderOptions(selectedValue);
+            }
         }
 
         function getCodeFromFilename(filename) {
@@ -2406,12 +2427,18 @@
             });
         }
 
-        function renderOptions() {
+        function renderOptions(selectedValue = selectedRegionValue) {
             const filtered = regions.filter((region) => {
                 return activeFilter === "all" || getProvince(region.label) === activeFilter;
             });
 
             regionSelect.innerHTML = "";
+            if (compactRegionQuery.matches) {
+                const placeholder = new Option("-", "");
+                placeholder.selected = !selectedValue;
+                regionSelect.append(placeholder);
+            }
+
             if (!filtered.length) {
                 const option = new Option("선택 가능한 지역이 없습니다", "");
                 regionSelect.append(option);
@@ -2423,6 +2450,15 @@
                 option.dataset.code = region.code;
                 regionSelect.append(option);
             });
+
+            const hasSelectedValue = selectedValue && [...regionSelect.options].some((option) => {
+                return option.value === selectedValue;
+            });
+            if (hasSelectedValue) {
+                regionSelect.value = selectedValue;
+            } else if (compactRegionQuery.matches) {
+                regionSelect.value = "";
+            }
         }
 
         function renderMap(regionLabel) {
@@ -2508,6 +2544,7 @@
 
         regionSelect.addEventListener("change", () => {
             if (regionSelect.value) {
+                selectedRegionValue = regionSelect.value;
                 setSelectedRegion(regionSelect.value);
             }
         });
@@ -2518,7 +2555,7 @@
         });
 
         refreshButton.addEventListener("click", () => {
-            const selected = regionSelect.value;
+            const selected = selectedRegionValue || regionSelect.value;
             if (selected) {
                 setSelectedRegion(selected);
             }
